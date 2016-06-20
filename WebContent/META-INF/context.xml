@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <!-- Default set of monitored resources -->
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+
+    <Resource 
+      	name="jdbc/dsExpeditor" 
+      	type="javax.sql.DataSource" 
+      	
+      	driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+      	url="jdbc:sqlserver://192.168.6.1:1433;databasename=Expeditor"
+      	username="sa"
+      	password="Pa$$w0rd"
+      	
+      	maxActive="5"
+		initialSize="1"
+    />
+</Context>

@@ -17,9 +17,12 @@ public class AccesBase
 
 		// Charger l'annuaire JNDI
 		InitialContext jndi = null;
-		try {
+		try 
+		{
 			jndi = new InitialContext();
-		} catch (NamingException ne) {
+		} 
+		catch (NamingException ne) 
+		{
 			ne.printStackTrace();
 			throw new SQLException("Impossible d'atteindre l'arbre JNDI");
 		}
@@ -27,14 +30,17 @@ public class AccesBase
 				
 		// Chercher le pool de connexion 
 		DataSource ds = null;
-		try {
+		try 
+		{
 			ds=(DataSource) jndi.lookup("java:comp/env/jdbc/dsTPWeb");
-		} catch (NamingException ne) {
+		} 
+		catch (NamingException ne) 
+		{
 			ne.printStackTrace();
-			throw new SQLException("Pool de connexion introuvable dans l'arbre jndi");
+			throw new SQLException("Pool de connexion introuvable dans l'arbre JNDI");
 		}
 		
-		// Activer une connexion du pool
+		// Activer une connexion du Pool
 		cnx=ds.getConnection();
 		
 		return cnx;
