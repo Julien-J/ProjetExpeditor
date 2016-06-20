@@ -13,7 +13,7 @@ public class AccesBase
 {
 	public static Connection getConnect() throws SQLException
 	{
-		Connection cnx=null;
+		Connection cnx = null;
 
 		// Charger l'annuaire JNDI
 		InitialContext jndi = null;
@@ -32,7 +32,7 @@ public class AccesBase
 		DataSource ds = null;
 		try 
 		{
-			ds=(DataSource) jndi.lookup("java:comp/env/jdbc/dsTPWeb");
+			ds = (DataSource)jndi.lookup("java:comp/env/jdbc/dsExpeditor");
 		} 
 		catch (NamingException ne) 
 		{
@@ -41,7 +41,7 @@ public class AccesBase
 		}
 		
 		// Activer une connexion du Pool
-		cnx=ds.getConnection();
+		cnx = ds.getConnection();
 		
 		return cnx;
 	}
