@@ -7,8 +7,8 @@ package fr.eni_ecole.expeditor.dao;
  * ProjectExpeditor Version 1.0
  * @author d1408davidj
  * 20 juin 2016
- *
  */
-public class DAOArticle {
+public class DAOArticle 
+{
 
 }
