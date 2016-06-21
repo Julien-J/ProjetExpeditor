@@ -1,41 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>Expeditor</title>
-		
-		<!-- JAVASCRIPT -->
-		<script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
-		<script type="text/javascript" src="<%=request.getContextPath()%>/js/fonction.js"></script>
-		<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-	
-		<!-- CSS -->
-		<link rel="stylesheet" href="<%=request.getContextPath()%>/theme/css/basique.css">
-		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" >
-	</head>
-	<body>
-		<div id="entete"> 
-			<div id="div_entete_logo">
-				<div id="div_logo">
-					<img src="<%=request.getContextPath()%>/theme/image/expeditor.png" />
-				</div>
-				<div id="div_expeditor">
-					EXPEDITOR
-				</div>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Expeditor</title>
+
+<!-- JAVASCRIPT -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+	integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+	crossorigin="anonymous"></script>
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/fonction.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/theme/css/basique.css">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<div id="entete">
+		<div id="div_entete_logo">
+			<div id="div_logo">
+				<img src="theme/image/expeditor.jpg" />
 			</div>
-			<%-- <% if(session.getAttribute("user") != null) { %> --%>
-			<div id="div_infos_connexion">
-				<div id="div_infos">				
-					Information de connexion de l'utilisateur
-				</div>				
-				<button type="button" class="btn btn-danger-outline">Déconnexion</button>
-			</div>
-			<%-- <% } %> --%>
+			<div id="div_expeditor">EXPEDITOR</div>
 		</div>
-		<div id="milieu">
-			<div id="menu">
-				<%@include file="/fragments/menu.jspf"%>
-			</div>
-			<div id="contenu">		
+		<%-- <% if(session.getAttribute("user") != null) { %> --%>
+		<div id="div_infos_connexion">
+			<div id="div_infos">Information de connexion de l'utilisateur</div>
+			<button type="button" class="btn btn-danger-outline">Déconnexion</button>
+		</div>
+		<%-- <% } %> --%>
+	</div>
+	<div id="milieu">
+		<div id="menu">
+			<%@include file="/fragments/menu.jspf"%>
+		</div>
+		<div id="contenu">
