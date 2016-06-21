@@ -21,7 +21,7 @@ public class DAOArticle
 	 * @return Objet Article
 	 * @throws SQLException
 	 */
-	public Article getArticle(String refArticle) throws SQLException
+	public static Article getArticle(String refArticle) throws SQLException
 	{
 		Article lArticle = new Article();
 		
@@ -62,7 +62,7 @@ public class DAOArticle
 	 * @return ArrayList<Article> : la liste des articles
 	 * @throws SQLException
 	 */
-	public ArrayList<Article> getAllArticle() throws SQLException
+	public static ArrayList<Article> getAllArticle() throws SQLException
 	{
 		ArrayList<Article> lesArticles = new ArrayList<Article>();
 		
@@ -102,7 +102,7 @@ public class DAOArticle
 	 * @param unArticle : l'article à insérer
 	 * @throws SQLException
 	 */
-	public String insertArticle(Article unArticle) throws SQLException 
+	public static String insertArticle(Article unArticle) throws SQLException 
 	{
 		String retourReference = null;
 		
@@ -138,7 +138,7 @@ public class DAOArticle
 	 * @param unArticle : l'article à mettre à jour
 	 * @throws SQLException
 	 */
-	public void updateArticle(Article unArticle) throws SQLException
+	public static void updateArticle(Article unArticle) throws SQLException
 	{
 		Connection cnx = null;
 		PreparedStatement rqt = null;
@@ -166,7 +166,7 @@ public class DAOArticle
 	 * @param unArticle : l'article à supprimer
 	 * @throws SQLException
 	 */
-	public void deleteArticle(Article unArticle) throws SQLException
+	public static void deleteArticle(Article unArticle) throws SQLException
 	{
 		Connection cnx = null;
 		PreparedStatement rqt = null;

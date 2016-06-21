@@ -17,7 +17,7 @@ public class DAOCommande
 	 * @return Objet Commande
 	 * @throws SQLException
 	 */
-	public Commande getCommande(String numCommande) throws SQLException
+	public static Commande getCommande(String numCommande) throws SQLException
 	{
 		Commande laCommande = new Commande();
 		
@@ -61,7 +61,7 @@ public class DAOCommande
 	 * @return ArrayList<Commande> : la liste des Commandes
 	 * @throws SQLException
 	 */
-	public ArrayList<Commande> getAllCommande() throws SQLException
+	public static ArrayList<Commande> getAllCommande() throws SQLException
 	{
 		ArrayList<Commande> lesCommandes = new ArrayList<Commande>();
 		

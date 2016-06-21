@@ -16,7 +16,7 @@ public class DAOClient
 	 * @return Objet Client
 	 * @throws SQLException
 	 */
-	public Client getClient(String numClient) throws SQLException
+	public static Client getClient(String numClient) throws SQLException
 	{
 		Client leClient = new Client();
 		
@@ -56,7 +56,7 @@ public class DAOClient
 	 * @return ArrayList<Client> : la liste des Clients
 	 * @throws SQLException
 	 */
-	public ArrayList<Client> getAlleClient() throws SQLException
+	public static ArrayList<Client> getAlleClient() throws SQLException
 	{
 		ArrayList<Client> lesClients = new ArrayList<Client>();
 		

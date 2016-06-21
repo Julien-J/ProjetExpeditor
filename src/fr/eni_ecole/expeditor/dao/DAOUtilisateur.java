@@ -72,7 +72,7 @@ public class DAOUtilisateur
 	 * @return Objet Utilisateur
 	 * @throws SQLException
 	 */
-	public Utilisateur getUtilisateur(String idUtilisateur) throws SQLException
+	public static Utilisateur getUtilisateur(String idUtilisateur) throws SQLException
 	{
 		Utilisateur lUtilisateur = new Utilisateur();
 		
@@ -115,7 +115,7 @@ public class DAOUtilisateur
 	 * @return ArrayList<Utilisateur> : la liste des utilisateurs
 	 * @throws SQLException
 	 */
-	public ArrayList<Utilisateur> getAllUtilisateur() throws SQLException
+	public static ArrayList<Utilisateur> getAllUtilisateur() throws SQLException
 	{
 		ArrayList<Utilisateur> lesUtilisateurs = new ArrayList<Utilisateur>();
 		
@@ -157,7 +157,7 @@ public class DAOUtilisateur
 	 * @throws SQLException
 	 * @throws NoSuchAlgorithmException 
 	 */
-	public String insertUtilisateur(Utilisateur unUtilisateur) throws SQLException, NoSuchAlgorithmException 
+	public static String insertUtilisateur(Utilisateur unUtilisateur) throws SQLException, NoSuchAlgorithmException 
 	{
 		String retourIdentifiant = null;
 		
@@ -196,7 +196,7 @@ public class DAOUtilisateur
 	 * @throws SQLException
 	 * @throws NoSuchAlgorithmException 
 	 */
-	public void updateUtilisateur(Utilisateur unUtilisateur) throws SQLException, NoSuchAlgorithmException
+	public static void updateUtilisateur(Utilisateur unUtilisateur) throws SQLException, NoSuchAlgorithmException
 	{
 		Connection cnx = null;
 		PreparedStatement rqt = null;
@@ -226,7 +226,7 @@ public class DAOUtilisateur
 	 * @param unUtilisateur : l'utilisateur à supprimer
 	 * @throws SQLException
 	 */
-	public void deleteUtilisateur(Utilisateur unUtilisateur) throws SQLException
+	public static void deleteUtilisateur(Utilisateur unUtilisateur) throws SQLException
 	{
 		Connection cnx = null;
 		PreparedStatement rqt = null;
