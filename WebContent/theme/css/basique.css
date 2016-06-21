@@ -23,7 +23,7 @@ div#div_entete_logo {
     float: left;
     width: 40%;
     height: 100%;
-    background-image: url("ProjetExpeditor/theme/image/expeditor.png");
+    background-image: url("/ProjetExpeditor/image/expeditor.png");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

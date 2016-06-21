@@ -19,7 +19,7 @@
 		<div id="entete"> 
 			<div id="div_entete_logo">
 				<div id="div_logo">
-					<img src="/theme/image/expeditor.png" />
+					<img src="<%=request.getContextPath()%>/theme/image/expeditor.png" />
 				</div>
 				<div id="div_expeditor">
 					EXPEDITOR
