@@ -1,5 +1,6 @@
 package fr.eni_ecole.expeditor.dao;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import fr.eni_ecole.expeditor.bean.Utilisateur;
+import fr.eni_ecole.expeditor.utils.OutilsString;
 
 
 /**
@@ -153,8 +155,9 @@ public class DAOUtilisateur
 	 * Méthode en charge d'insérer un nouvel utilisateur en base
 	 * @param unUtilisateur : l'utilisateur à insérer
 	 * @throws SQLException
+	 * @throws NoSuchAlgorithmException 
 	 */
-	public String insertUtilisateur(Utilisateur unUtilisateur) throws SQLException 
+	public String insertUtilisateur(Utilisateur unUtilisateur) throws SQLException, NoSuchAlgorithmException 
 	{
 		String retourIdentifiant = null;
 		
@@ -169,7 +172,7 @@ public class DAOUtilisateur
 			rqt.setString(1, unUtilisateur.getLogin());
 			rqt.setString(2, unUtilisateur.getNom());
 			rqt.setString(3, unUtilisateur.getPrenom());
-			rqt.setString(4, unUtilisateur.getMotDePasse());
+			rqt.setString(4, OutilsString.convertTOMD5(unUtilisateur.getMotDePasse()));
 			rqt.setString(5, unUtilisateur.getStatut());
 			rqt.executeUpdate();
 			rs = rqt.getGeneratedKeys();
@@ -191,8 +194,9 @@ public class DAOUtilisateur
 	 * Méthode en charge de mettre à jour un utilisateur en base
 	 * @param unUtilisateur : l'utilisateur à mettre à jour
 	 * @throws SQLException
+	 * @throws NoSuchAlgorithmException 
 	 */
-	public void updateUtilisateur(Utilisateur unUtilisateur) throws SQLException
+	public void updateUtilisateur(Utilisateur unUtilisateur) throws SQLException, NoSuchAlgorithmException
 	{
 		Connection cnx = null;
 		PreparedStatement rqt = null;
@@ -204,7 +208,7 @@ public class DAOUtilisateur
 			rqt.setString(1, unUtilisateur.getLogin());
 			rqt.setString(2, unUtilisateur.getNom());
 			rqt.setString(3, unUtilisateur.getPrenom());
-			rqt.setString(4, unUtilisateur.getMotDePasse());
+			rqt.setString(4, OutilsString.convertTOMD5(unUtilisateur.getMotDePasse()));
 			rqt.setString(5, unUtilisateur.getStatut());
 			rqt.setString(6, unUtilisateur.getId());
 
