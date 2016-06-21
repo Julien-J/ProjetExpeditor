@@ -10,8 +10,8 @@
 		<table class="table table-striped">
 		    <tbody>
 		    	<tr>
-		      		<td width="200px"> </td>
-		      		<td width="200px"> </td>
+		      		<td width="200px"> Société </td>
+		      		<td width="200px"> Adresse </td>
 		      	</tr>
 		      	<tr>
 		      		<td width="200px"> </td>
