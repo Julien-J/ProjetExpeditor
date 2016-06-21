@@ -17,6 +17,54 @@ import fr.eni_ecole.expeditor.bean.Utilisateur;
 public class DAOUtilisateur
 {
 	/**
+	 * Méthode en charge de rechercher la correspondance d'un login/mdp
+	 * @param login : login saisi
+	 * @param motDePasse : mot de passe saisi
+	 * @return Objet Utilisateur ou null
+	 * @throws SQLException
+	 */
+	@SuppressWarnings("null")
+	public static Utilisateur rechercher(String login, String motDePasse) throws SQLException
+	{
+		Utilisateur utilisateurConnecte = null;
+		
+		Connection cnx = null;
+		PreparedStatement rqt = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			cnx = AccesBase.getConnect();
+			rqt = cnx.prepareStatement("SELECT id, nom, prenom, statut FROM UTILISATEUR WHERE login = ? and mdp = ?");
+			rqt.setString(1, login);
+			rqt.setString(2, motDePasse);
+			rs=rqt.executeQuery();
+			
+			if (rs.next())
+			{
+				utilisateurConnecte.setId(rs.getString("id"));
+				utilisateurConnecte.setLogin(login);
+				utilisateurConnecte.setNom(rs.getString("nom"));
+				utilisateurConnecte.setPrenom(rs.getString("prenom"));
+				utilisateurConnecte.setMotDePasse(motDePasse);
+				utilisateurConnecte.setStatut(rs.getString("statut"));
+			}
+			else 
+			{
+				utilisateurConnecte = null;
+			}
+			
+		}
+		finally
+		{
+			if (rs!=null) rs.close();
+			if (rqt!=null) rqt.close();
+			if (cnx!=null) cnx.close();
+		}
+		return utilisateurConnecte;
+	}
+	
+	/**
 	 * Méthode en charge de récupérer un Utilisateur
 	 * @param idUtilisateur : identifiant de l'utilisateur à récupérer
 	 * @return Objet Utilisateur
