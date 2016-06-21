@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class LigneCommande implements Serializable
 {
+	private static final long serialVersionUID = -1445841740122843037L;
+	
 	// Attributs
 	private String numCommande;
 	private String refArticle;

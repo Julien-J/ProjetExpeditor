@@ -1,8 +1,8 @@
 package fr.eni_ecole.expeditor.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import fr.eni_ecole.expeditor.bean.enums.EtatCommande;
 
@@ -13,6 +13,8 @@ import fr.eni_ecole.expeditor.bean.enums.EtatCommande;
  */
 public class Commande implements Serializable
 {
+	private static final long serialVersionUID = 1277087965945937430L;
+	
 	// Attributs
 	private String num;
 	private String numClient;
@@ -20,7 +22,7 @@ public class Commande implements Serializable
 	private Date date;
 	private int poidsTotal;
 	private EtatCommande etat;
-	private List<LigneCommande> lesLignes;
+	private ArrayList<LigneCommande> lesLignes;
 	
 	// Constructeurs
 	public Commande() 
@@ -28,18 +30,7 @@ public class Commande implements Serializable
 		super();
 	}
 
-	public Commande(String num, String numClient, String idEmploye, Date date, int poidsTotal, EtatCommande etat) 
-	{
-		super();
-		this.num = num;
-		this.numClient = numClient;
-		this.idEmploye = idEmploye;
-		this.date = date;
-		this.poidsTotal = poidsTotal;
-		this.etat = etat;
-	}
-	
-	public Commande(String num, String numClient, String idEmploye, Date date, int poidsTotal, EtatCommande etat, List<LigneCommande> lesLignes) 
+	public Commande(String num, String numClient, String idEmploye, Date date, int poidsTotal, EtatCommande etat, ArrayList<LigneCommande> lesLignes) 
 	{
 		super();
 		this.num = num;
@@ -100,11 +91,11 @@ public class Commande implements Serializable
 		this.etat = etat;
 	}
 
-	public List<LigneCommande> getLesLignes() {
+	public ArrayList<LigneCommande> getLesLignes() {
 		return lesLignes;
 	}
 
-	public void setLesLignes(List<LigneCommande> lesLignes) {
+	public void setLesLignes(ArrayList<LigneCommande> lesLignes) {
 		this.lesLignes = lesLignes;
 	}	
 }

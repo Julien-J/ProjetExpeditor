@@ -7,10 +7,12 @@ import java.io.Serializable;
  * @author d1410lheraultj
  * 20 juin 2016
  */
-public class User implements Serializable
+public class Utilisateur implements Serializable
 {
+	private static final long serialVersionUID = -8358615539378732093L;
+	
 	// Attributs
-	private int id;
+	private String id;
 	private String nom;
 	private String prenom;
 	private String login;
@@ -18,12 +20,12 @@ public class User implements Serializable
 	private String statut;
 	
 	// Constructeurs
-	public User()
+	public Utilisateur()
 	{
 		super();
 	}
 
-	public User(int id, String nom, String prenom, String login, String motDePasse, String statut) 
+	public Utilisateur(String id, String nom, String prenom, String login, String motDePasse, String statut) 
 	{
 		super();
 		this.id = id;
@@ -35,12 +37,12 @@ public class User implements Serializable
 	}
 
 	// Accesseurs
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setId(String string) {
+		this.id = string;
 	}
 	
 	public String getNom() {

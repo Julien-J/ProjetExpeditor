@@ -12,6 +12,8 @@ import java.io.Serializable;
  */
 public class Article implements Serializable
 {
+	private static final long serialVersionUID = -5293013352693988471L;
+	
 	// Attributs
 	private String ref;
 	private String libelle;

@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class Client implements Serializable
 {
+	private static final long serialVersionUID = -3136325368208004956L;
+	
 	// Attributs
 	private String num;
 	private String nom;

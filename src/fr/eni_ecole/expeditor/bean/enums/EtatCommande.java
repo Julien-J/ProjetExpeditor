@@ -20,4 +20,20 @@ public enum EtatCommande
     }
 
     public String displayName() { return displayName; }
+    
+    public static EtatCommande getEnum(String value)
+    {
+    	if (value == "En attente")
+    	{
+    		return ATTENTE;
+    	}
+    	else if (value == "En cours de traitement")
+    	{
+    		return ENCOURS;
+    	}
+    	else
+    	{
+    		return TRAITEE;
+    	}
+    }
 }
