@@ -1,10 +1,13 @@
 package fr.eni_ecole.expeditor.bean;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
 import fr.eni_ecole.expeditor.bean.enums.EtatCommande;
+import fr.eni_ecole.expeditor.dao.DAOClient;
+import fr.eni_ecole.expeditor.dao.DAOUtilisateur;
 
 /**
  * ProjectExpeditor Version 1.0
@@ -58,6 +61,18 @@ public class Commande implements Serializable
 	public void setNumClient(String numClient) {
 		this.numClient = numClient;
 	}
+	
+	public Client getClient()
+	{
+		try 
+		{
+			return DAOClient.getClient(this.numClient);
+		} 
+		catch (SQLException e)
+		{
+			return null;
+		}
+	}
 
 	public String getIdEmploye() {
 		return idEmploye;
@@ -65,6 +80,18 @@ public class Commande implements Serializable
 
 	public void setIdEmploye(String idEmploye) {
 		this.idEmploye = idEmploye;
+	}
+	
+	public Utilisateur getUtilisateur()
+	{
+		try 
+		{
+			return DAOUtilisateur.getUtilisateur(this.idEmploye);
+		} 
+		catch (SQLException e)
+		{
+			return null;
+		}
 	}
 
 	public Date getDate() {
