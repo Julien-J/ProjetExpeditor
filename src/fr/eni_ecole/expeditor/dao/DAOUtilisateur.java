@@ -19,7 +19,7 @@ import fr.eni_ecole.expeditor.utils.OutilsString;
 public class DAOUtilisateur
 {
 	/**
-	 * Méthode en charge de rechercher la correspondance d'un login/mdp
+	 * Mï¿½thode en charge de rechercher la correspondance d'un login/mdp
 	 * @param login : login saisi
 	 * @param motDePasse : mot de passe saisi
 	 * @return Objet Utilisateur ou null
@@ -44,6 +44,7 @@ public class DAOUtilisateur
 			
 			if (rs.next())
 			{
+				utilisateurConnecte = new Utilisateur();
 				utilisateurConnecte.setId(rs.getString("id"));
 				utilisateurConnecte.setLogin(login);
 				utilisateurConnecte.setNom(rs.getString("nom"));
@@ -55,7 +56,6 @@ public class DAOUtilisateur
 			{
 				utilisateurConnecte = null;
 			}
-			
 		}
 		finally
 		{
@@ -67,8 +67,8 @@ public class DAOUtilisateur
 	}
 	
 	/**
-	 * Méthode en charge de récupérer un Utilisateur
-	 * @param idUtilisateur : identifiant de l'utilisateur à récupérer
+	 * Mï¿½thode en charge de rï¿½cupï¿½rer un Utilisateur
+	 * @param idUtilisateur : identifiant de l'utilisateur ï¿½ rï¿½cupï¿½rer
 	 * @return Objet Utilisateur
 	 * @throws SQLException
 	 */
@@ -111,7 +111,7 @@ public class DAOUtilisateur
 	}
 	
 	/**
-	 * Méthode en charge de récupérer tous les utilisateurs en base
+	 * Mï¿½thode en charge de rï¿½cupï¿½rer tous les utilisateurs en base
 	 * @return ArrayList<Utilisateur> : la liste des utilisateurs
 	 * @throws SQLException
 	 */
@@ -152,8 +152,8 @@ public class DAOUtilisateur
 	}
 	
 	/**
-	 * Méthode en charge d'insérer un nouvel utilisateur en base
-	 * @param unUtilisateur : l'utilisateur à insérer
+	 * Mï¿½thode en charge d'insï¿½rer un nouvel utilisateur en base
+	 * @param unUtilisateur : l'utilisateur ï¿½ insï¿½rer
 	 * @throws SQLException
 	 * @throws NoSuchAlgorithmException 
 	 */
@@ -191,8 +191,8 @@ public class DAOUtilisateur
 	}
 	
 	/**
-	 * Méthode en charge de mettre à jour un utilisateur en base
-	 * @param unUtilisateur : l'utilisateur à mettre à jour
+	 * Mï¿½thode en charge de mettre ï¿½ jour un utilisateur en base
+	 * @param unUtilisateur : l'utilisateur ï¿½ mettre ï¿½ jour
 	 * @throws SQLException
 	 * @throws NoSuchAlgorithmException 
 	 */
@@ -222,8 +222,8 @@ public class DAOUtilisateur
 	}
 	
 	/**
-	 * Méthode en charge de supprimer un utilisateur de la base
-	 * @param unUtilisateur : l'utilisateur à supprimer
+	 * Mï¿½thode en charge de supprimer un utilisateur de la base
+	 * @param unUtilisateur : l'utilisateur ï¿½ supprimer
 	 * @throws SQLException
 	 */
 	public static void deleteUtilisateur(Utilisateur unUtilisateur) throws SQLException

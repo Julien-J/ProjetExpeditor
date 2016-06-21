@@ -1,5 +1,13 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.text.DateFormat"%>
+<%@page import="java.util.Date"%>
+<%@page import="fr.eni_ecole.expeditor.bean.Utilisateur"%>
+<%@page import="javax.management.modelmbean.RequiredModelMBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+	DateFormat df = new SimpleDateFormat("dd/MM/yyyy à HH:mm");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -17,25 +25,47 @@
 <!-- CSS -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/theme/css/basique.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/theme/css/structure.css">
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 	<div id="entete">
-		<div id="div_entete_logo">
-			<div id="div_logo">
-				<img src="theme/image/expeditor.jpg" />
-			</div>
+		<div id="div_entete_logo">		
+			<a id="lien_accueil" href="<%=request.getContextPath()%>" title="Retour à la page principale">
+				<div id="div_logo">
+					<img src="theme/image/expeditor.jpg" />
+				</div>
+			</a>
 			<div id="div_expeditor">EXPEDITOR</div>
 		</div>
-		<%-- <% if(session.getAttribute("user") != null) { %> --%>
 		<div id="div_infos_connexion">
-			<div id="div_infos">Information de connexion de l'utilisateur</div>
-			<button type="button" class="btn btn-danger-outline">Déconnexion</button>
+		<% if(session.getAttribute("user") != null) { %>
+			<div id="div_infos">
+				<div>
+					<%=((Utilisateur)session.getAttribute("user")).getNom().toUpperCase() + " " 
+							+ ((Utilisateur)session.getAttribute("user")).getPrenom()%>
+				</div>
+				<div>
+					X demandes en attentes
+				</div>
+				<div>
+					<a class="pointer" onclick="reloadPage()" title="Rafraichir la page"><%= df.format(new Date())%></a>
+				</div>
+			</div>
+			<a href="<%=request.getContextPath()%>/deconnexion">
+				<button type="button" class="btn btn-primary">
+					Déconnexion
+				</button>
+			</a>
+		<% } %>
 		</div>
-		<%-- <% } %> --%>
 	</div>
 	<div id="milieu">
-		<div id="menu">
-			<%@include file="/fragments/menu.jspf"%>
-		</div>
+		<% if(session.getAttribute("user") != null && 
+				"manager".equals(((Utilisateur)session.getAttribute("user")).getStatut())) { %>
+			<div id="menu">
+				<%@include file="/fragments/menu.jspf"%>
+			</div>
+		<% } %>
 		<div id="contenu">

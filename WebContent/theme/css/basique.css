@@ -10,12 +10,13 @@ body{
 
 div#entete {
     width: 100%;
-    height: 100px;
+    height: 120px;
+    margin-bottom : 2%;
 }
 
 div#div_entete_logo {
     float: left;
-    width: 25%;
+    width: 30%;
     height: 100%;
 }
 
@@ -23,17 +24,19 @@ div#div_entete_logo {
     float: left;
     width: 40%;
     height: 100%;
-    background-image: url("/ProjetExpeditor/image/expeditor.png");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
 }
 
+a#lien_accueil{
+	float: left;
+    width: 40%;
+}
 
 #div_expeditor{
     float: right;
-    width: 60%;
+    width: 50%;
     margin-top: 13%;
+    color: #337ab7;
+    font-size: 30px;
 }
 
 #div_infos {
@@ -42,7 +45,7 @@ div#div_entete_logo {
 
 div#div_infos_connexion {
     float: right;
-    width: 75%;
+    width: 70%;
     height: 100%;
     text-align: right;
     padding-top: 3%;
@@ -55,4 +58,28 @@ div#milieu {
 div#menu {
     margin-top: 2%;
     margin-bottom: 2%;
+}
+
+/***********************/
+/** PAGE DE CONNEXION **/
+/***********************/
+
+div#div_form_connexion {
+    margin: auto;
+    width: 35%;
+}
+
+div#panel_body_connexion{
+	padding: 2% 5%;
+}
+
+div.form-group input{
+    margin-bottom: 1%;
+}
+
+button#btn_connexion {
+    width: 30%;
+    display: block;
+    margin: auto;
+    margin-top: 5%;
 }

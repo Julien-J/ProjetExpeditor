@@ -1,12 +1,19 @@
 package fr.eni_ecole.expeditor.servlet;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import fr.eni_ecole.expeditor.bean.Utilisateur;
+import fr.eni_ecole.expeditor.dao.DAOUtilisateur;
+import fr.eni_ecole.expeditor.utils.OutilsString;
 
 /**
  * Servlet implementation class Connexion
@@ -20,14 +27,13 @@ public class Connexion extends HttpServlet {
      */
     public Connexion() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init(ServletConfig config) throws ServletException {
-		// TODO Auto-generated method stub
+		super.init(config);
 	}
 
 	/**
@@ -41,23 +47,73 @@ public class Connexion extends HttpServlet {
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		super.service(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		processRequest(request,response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		processRequest(request,response);
+	}
+
+	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String identifiant = request.getParameter("id");
+		String motdepasse = request.getParameter("pass");
+		Utilisateur user = new Utilisateur();
+		RequestDispatcher dp = null;
+//		try {
+//			System.out.println(OutilsString.convertTOMD5("mdp123"));
+//			System.out.println(OutilsString.convertTOMD5("hellokitty"));
+//			System.out.println(OutilsString.convertTOMD5("goldorakdu44"));
+//			System.out.println(OutilsString.convertTOMD5("skywalker86"));
+//		} catch (NoSuchAlgorithmException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+		try{			
+			if(request.getSession().getAttribute("user") == null){
+				user = DAOUtilisateur.rechercher(identifiant,OutilsString.convertTOMD5(motdepasse));
+				if(user == null){
+					dp = request.getRequestDispatcher("/index.jsp");
+					request.setAttribute("message", "Identifiant ou mot de passe incorrect");
+					dp.forward(request, response);
+				} else{
+					request.getSession().setAttribute("user", user);
+					//Si c'est un employe => écran commande
+					//Si c'est un manager => écran gestion des articles
+					if("employe".equals(user.getStatut())){
+						dp = request.getRequestDispatcher("/employe/gestionCommande.jsp");
+					}else{
+						dp = request.getRequestDispatcher("/manager/gestionArticle.jsp");
+					}
+					dp.forward(request, response);
+				}			
+				
+			}else{
+				user = (Utilisateur)request.getSession().getAttribute("user");
+				if(user.getStatut() == ""){
+					dp = request.getRequestDispatcher("/employe/gestionCommande.jsp");
+				}else{
+					dp = request.getRequestDispatcher("/manager/gestionArticle.jsp");
+				}
+				dp.forward(request, response);
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			dp = request.getRequestDispatcher("/erreur.jsp");
+			request.setAttribute("erreur", e);
+			dp.forward(request, response);
+		}
 	}
 
 }
