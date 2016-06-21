@@ -1,4 +1,10 @@
 <%@include file="/fragments/haut.jspf"%>
+<%@ page
+	import="fr.eni_ecole.expeditor.bean.*, java.util.*, java.text.*"%>
+<%
+	ArrayList<Article> listeArticle = (ArrayList<Article>) request.getSession().getAttribute("listeArticles");
+	int index = 0;
+%>
 <script type="text/javascript" src="js/gestionArticle.js"></script>
 <div style="float: right;">
 	<button type="button" class="btn btn-primary" data-toggle="modal"
@@ -7,25 +13,32 @@
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<th>Référence</th>
 			<th>Libellé</th>
 			<th>Poids</th>
+			<th>Description</th>
 			<th>Actions</th>
 		</tr>
 	</thead>
 	<tbody>
+		<%
+			int i = 0;
+			for (Article unArticle : listeArticle) {
+		%>
 		<tr>
-			<td>0</td>
-			<td>Test</td>
-			<td>12</td>
-			<td>test</td>
+			<td id=<%=i%>><%=unArticle.getLibelle()%></td>
+			<td id=<%=i%>><%=unArticle.getPoids()%> g</td>
+			<td id=<%=i%>><%=unArticle.getDescription()%></td>
+			<td><button type="button" class="btn btn-success">
+					<span class="glyphicon glyphicon-pencil"></span>
+				</button>
+				<button type="button" class="btn btn-danger">
+					<span class="glyphicon glyphicon-trash"></span>
+				</button></td>
 		</tr>
-		<tr>
-			<td>1</td>
-			<td>Disque</td>
-			<td>300</td>
-			<td>un beau disque</td>
-		</tr>
+		<%
+			i++;
+			}
+		%>
 	</tbody>
 </table>
 <div class="modal fade" id="ajoutArticle" role="dialog">

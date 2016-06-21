@@ -1,6 +1,9 @@
 package fr.eni_ecole.expeditor.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -10,12 +13,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni_ecole.expeditor.bean.Article;
+import fr.eni_ecole.expeditor.dao.DAOArticle;
+
 /**
  * Servlet implementation class Articles
  */
 @WebServlet("/articles")
 public class Articles extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -52,7 +59,6 @@ public class Articles extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		processRequest(request, response);
 	}
 
@@ -60,12 +66,19 @@ public class Articles extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		processRequest(request, response);
 	}
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) {
 		try {
+			ArrayList<Article> mesArticles = new ArrayList<Article>();
+			try {
+				mesArticles = DAOArticle.getAllArticle();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			request.getSession().setAttribute("listeArticles", mesArticles); 
 			request.getRequestDispatcher("/manager/gestionArticle.jsp").forward(request, response);
 		} catch (ServletException e) {
 			e.printStackTrace();
