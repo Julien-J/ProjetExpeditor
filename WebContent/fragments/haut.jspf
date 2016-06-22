@@ -21,6 +21,7 @@
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/fonction.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/bootstrap/bootstrap-sortable-master/Scripts/bootstrap-sortable.js"></script>
 
 <!-- CSS -->
 <link rel="stylesheet"
@@ -28,6 +29,7 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/theme/css/structure.css">
 <link href="<%=request.getContextPath()%>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/bootstrap/bootstrap-sortable-master/Contents/bootstrap-sortable.css" rel="stylesheet">
 </head>
 <body>
 	<div id="entete">

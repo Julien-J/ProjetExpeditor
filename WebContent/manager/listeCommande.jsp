@@ -12,7 +12,7 @@
 %>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/listeCommande.js"></script>
 
-<table class="table table-striped">
+<table id="tabCommande" class="table table-striped">
     <thead>
       <tr>
       	<th>Numéro</th>
@@ -83,7 +83,7 @@
 			formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			date = maCommande.getDate();
 			maDateFr = formatter.format(date);
-		--%> --%>
+		--%>
         <h4 class="modal-title">Commande <%=maCommande.getNum() + " - " %></h4>
       </div>
       <div class="modal-body">
