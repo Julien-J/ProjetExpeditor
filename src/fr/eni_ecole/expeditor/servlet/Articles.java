@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+
+
+
 import fr.eni_ecole.expeditor.bean.Article;
 import fr.eni_ecole.expeditor.dao.DAOArticle;
-import jdk.nashorn.internal.ir.debug.JSONWriter;
 
 /**
  * Servlet implementation class Articles
@@ -126,8 +128,8 @@ public class Articles extends HttpServlet {
 				e.printStackTrace();
 			}
 			out.println(monJson);
-			out.flush();
-*/
+			out.flush();*/
+
 		} else if ("delete_article".equals(action)) {
 			System.out.println("delete_article");
 			String reference = request.getParameter("reference");

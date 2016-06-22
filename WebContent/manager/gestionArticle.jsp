@@ -1,4 +1,7 @@
-<% String menu="articles"; %>
+
+<%
+	String menu = "articles";
+%>
 <%@include file="/fragments/haut.jspf"%>
 <%@ page
 	import="fr.eni_ecole.expeditor.bean.*, java.util.*, java.text.*"%>
@@ -95,7 +98,10 @@
 </div>
 <script>
 	function get_article(id) {
-		$.getJSON( "/manager/articles", {"reference" : id, "action" : "get_article" }).done( function(data){
+		$.getJSON("/manager/articles", {
+			"reference" : id,
+			"action" : "get_article"
+		}).done(function(data) {
 			$("#referenceArticle").text(data.ref);
 			$("#libelleArticle").text(data.libelle);
 			$("#descriptionArticle").text(data.description);
@@ -128,7 +134,6 @@
 			}
 		});
 	}
-	
 </script>
 <%@include file="/fragments/bas.jspf"%>
 
