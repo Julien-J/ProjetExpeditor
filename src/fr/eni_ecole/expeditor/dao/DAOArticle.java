@@ -113,7 +113,7 @@ public class DAOArticle
 		try 
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("INSERT INTO ARTICLE(libelle, description, poids) VALUES (?,?,?) SELECT SCOPE_IDENTITY()");
+			rqt = cnx.prepareStatement("INSERT INTO ARTICLE VALUES (newid(), ?,?,?) SELECT SCOPE_IDENTITY()");
 			rqt.setString(1, unArticle.getLibelle());
 			rqt.setString(2, unArticle.getDescription());
 			rqt.setInt(3, unArticle.getPoids());

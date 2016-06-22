@@ -66,7 +66,8 @@
 								<span class="glyphicon glyphicon-minus"></span>
 							</button>
 						</span> <input type="text" class="form-control input-sm text-center"
-							value="1"> <span class="input-group-btn">
+							value="1" id="poidsArticle"> <span
+							class="input-group-btn">
 							<button class="btn btn-default input-sm" data-dir="up">
 								<span class="glyphicon glyphicon-plus"></span>
 							</button>
@@ -79,7 +80,8 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="add_article()">Enregistrer</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+					onclick="add_article()">Enregistrer</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
 			</div>
 		</div>
@@ -90,18 +92,19 @@
 		$.ajax({
 			url : "manager/articles",
 			method : "POST",
-			data : "action=delete_article&reference="+$(id)[0].dataset.id
-		}); 
+			data : "action=delete_article&reference=" + $(id)[0].dataset.id
+		});
 	}
-	
+
 	function add_article() {
 		$.ajax({
 			url : "manager/articles",
-			method : "PUT",
-			data : "action=add_article&reference="+$(id)[0].dataset.id
-		}); 
+			method : "POST",
+			data : "action=add_article&libelle=" + $("#libelleArticle").val()
+					+ "&description=" + $("#descriptionArticle").val()
+					+ "&poids="+ $("#poidsArticle").val()
+		});
 	}
-	
 </script>
 <%@include file="/fragments/bas.jspf"%>
 
