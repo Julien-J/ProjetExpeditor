@@ -91,6 +91,7 @@ public class GestionCommande extends HttpServlet
 			if (DAOCommande.getCommande(Integer.parseInt(numCommande)).getEtat() == EtatCommande.ATTENTE)
 			{
 				firstCommand = DAOCommande.getCommande(Integer.parseInt(numCommande));
+				break;
 			}
 		}
 		
