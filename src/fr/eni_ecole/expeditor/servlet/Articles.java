@@ -19,9 +19,10 @@ import fr.eni_ecole.expeditor.dao.DAOArticle;
 /**
  * Servlet implementation class Articles
  */
-@WebServlet("/manager/articles")
+@WebServlet("/articles")
 public class Articles extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -76,15 +77,33 @@ public class Articles extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) {
 
+		System.out.println("début_article");
 		RequestDispatcher dispatcher;
-		//String action = request.getParameter("action");
-		//if ("getArticles".equals(action)) {
+		String action = request.getParameter("action");
+		if ("delete_article".equals(action)) {
+			System.out.println("delete_article");
+			String reference = request.getParameter("reference");
+			System.out.println(reference);
+			Article monArticle = new Article();
+			try {
+				monArticle = DAOArticle.getArticle(reference);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				DAOArticle.deleteArticle(monArticle);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			System.out.println("liste_article");
 			try {
 				ArrayList<Article> mesArticles = new ArrayList<Article>();
 				try {
 					mesArticles = DAOArticle.getAllArticle();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				request.getSession().setAttribute("listeArticles", mesArticles);
@@ -95,6 +114,6 @@ public class Articles extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-	//}
+	}
 
 }

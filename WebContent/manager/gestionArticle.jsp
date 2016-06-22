@@ -31,7 +31,8 @@
 			<td><button type="button" class="btn btn-success">
 					<span class="glyphicon glyphicon-pencil"></span>
 				</button>
-				<button type="button" class="btn btn-danger">
+				<button type="button" class="btn btn-danger"
+					data-id=<%=unArticle.getRef()%> onclick="delete_article(this)">
 					<span class="glyphicon glyphicon-trash"></span>
 				</button></td>
 		</tr>
@@ -84,5 +85,14 @@
 		</div>
 	</div>
 </div>
+<script>
+	function delete_article(id) {
+		$.ajax({
+			url : "articles",
+			method : "POST",
+			data : "action=delete_article&reference="+$(id)[0].dataset.id
+		}); 
+	}
+</script>
 <%@include file="/fragments/bas.jspf"%>
 
