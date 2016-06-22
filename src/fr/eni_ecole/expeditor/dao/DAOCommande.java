@@ -7,13 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import fr.eni_ecole.expeditor.bean.Commande;
+import fr.eni_ecole.expeditor.bean.Utilisateur;
 import fr.eni_ecole.expeditor.bean.enums.EtatCommande;
 
 public class DAOCommande 
 {
 	/**
-	 * Méthode en charge de récupérer une Commande
-	 * @param numCommande : numéro de la Commande à récupérer
+	 * Mï¿½thode en charge de rï¿½cupï¿½rer une Commande
+	 * @param numCommande : numï¿½ro de la Commande ï¿½ rï¿½cupï¿½rer
 	 * @return Objet Commande
 	 * @throws SQLException
 	 */
@@ -57,7 +58,7 @@ public class DAOCommande
 	}
 	
 	/**
-	 * Méthode en charge de récupérer toutes les Commandes en base
+	 * Mï¿½thode en charge de rï¿½cupï¿½rer toutes les Commandes en base
 	 * @return ArrayList<Commande> : la liste des Commandes
 	 * @throws SQLException
 	 */
@@ -99,7 +100,7 @@ public class DAOCommande
 	}
 	
 	/**
-	 * Méthode en charge de retourner le nombre de commandes en attente
+	 * Mï¿½thode en charge de retourner le nombre de commandes en attente
 	 * @return nbCommandeEA : int
 	 * @throws SQLException
 	 */
@@ -128,5 +129,30 @@ public class DAOCommande
 			if (cnx!=null) cnx.close();
 		}
 		return nbCommandeEA;
+	}
+	
+	/**
+	 * MÃ©thode en charge de rÃ©inialiser la commande en cours d'un utilisateur 
+	 * @param userConnecte
+	 * @return
+	 * @throws SQLException 
+	 */
+	public static Boolean resetCommandeEnCours(Utilisateur userConnecte) throws SQLException{
+		Connection cnx = null;
+		PreparedStatement rqt = null;
+		
+		try 
+		{
+			cnx = AccesBase.getConnect();
+			rqt = cnx.prepareStatement("UPDATE COMMANDE SET etat = 'en attente', idUser = NULL WHERE idUser = ?");
+			rqt.setString(1, userConnecte.getId());
+			rqt.executeQuery();
+			return rqt.executeUpdate() > 0;
+		}
+		finally 
+		{
+			if (rqt!=null) rqt.close();
+			if (cnx!=null) cnx.close();
+		}
 	}
 }

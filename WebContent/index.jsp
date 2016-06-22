@@ -1,6 +1,6 @@
 <%@include file="/fragments/haut.jspf" %>
 
-
+<% if(session.getAttribute("user") == null ) { %>
 <div class="panel panel-primary" id="div_form_connexion">
       <div class="panel-heading">Authentification</div>
       <div class="panel-body" id="panel_body_connexion">
@@ -22,7 +22,13 @@
 		</form>
 	</div>
 </div>
-
+<% } else{ 
+	if("employe".equals(((Utilisateur)session.getAttribute("user")).getStatut())){
+		request.getRequestDispatcher("/employe/commande").forward(request,response);
+	}else{
+		request.getRequestDispatcher("/manager/articles").forward(request,response);
+	}
+}%>
 
 
 

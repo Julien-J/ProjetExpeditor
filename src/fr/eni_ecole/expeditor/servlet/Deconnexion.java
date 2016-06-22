@@ -1,12 +1,18 @@
 package fr.eni_ecole.expeditor.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import fr.eni_ecole.expeditor.bean.Commande;
+import fr.eni_ecole.expeditor.bean.Utilisateur;
+import fr.eni_ecole.expeditor.dao.DAOCommande;
 
 /**
  * Servlet implementation class Deconnexion
@@ -57,9 +63,21 @@ public class Deconnexion extends HttpServlet {
 		processRequest(request,response);
 	}
 
-	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		Utilisateur userConnecte = (Utilisateur)request.getSession().getAttribute("user");
+		
+		if("employe".equals(userConnecte.getStatut())){			
+			try {
+				DAOCommande.resetCommandeEnCours(userConnecte);
+			} catch (SQLException e) {
+				request.setAttribute("erreur", e);
+				request.getRequestDispatcher("/erreur.jsp").forward(request, response);
+			}
+		}
+		
 		request.getSession(false).invalidate();
 		response.sendRedirect(request.getContextPath()+"/");
 	}
+	
 
 }
