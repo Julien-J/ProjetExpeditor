@@ -6,7 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-	DateFormat df = new SimpleDateFormat("dd/MM/yyyy à HH:mm");
+	DateFormat df = new SimpleDateFormat("dd/MM/yyyy à HH:mm");	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -20,34 +20,36 @@
 	crossorigin="anonymous"></script>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/fonction.js"></script>
-<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/bootstrap/js/bootstrap.min.js"></script>
 
 <!-- CSS -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/theme/css/basique.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/theme/css/structure.css">
-<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 	<div id="entete">
 		<div id="div_entete_logo">		
 			<a id="lien_accueil" href="<%=request.getContextPath()%>" title="Retour à la page principale">
 				<div id="div_logo">
-					<img src="theme/image/expeditor.jpg" />
+					<img src="<%=request.getContextPath()%>/theme/image/expeditor.jpg" />
 				</div>
 			</a>
 			<div id="div_expeditor">EXPEDITOR</div>
 		</div>
 		<div id="div_infos_connexion">
-		<% if(session.getAttribute("user") != null) { %>
+		<% if(session.getAttribute("user") != null) { 
+			int nbCmd = Integer.parseInt(session.getAttribute("nbCmdAttentes").toString());
+		%>
 			<div id="div_infos">
 				<div>
 					<%=((Utilisateur)session.getAttribute("user")).getNom().toUpperCase() + " " 
 							+ ((Utilisateur)session.getAttribute("user")).getPrenom()%>
 				</div>
 				<div>
-					X demandes en attentes
+					<%=nbCmd%> demande<%=nbCmd>1?"s":""%> en attente<%=nbCmd>1?"s":""%>
 				</div>
 				<div>
 					<a class="pointer" onclick="reloadPage()" title="Rafraichir la page"><%= df.format(new Date())%></a>

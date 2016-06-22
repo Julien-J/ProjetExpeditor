@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.eni_ecole.expeditor.bean.Utilisateur;
+import fr.eni_ecole.expeditor.dao.DAOCommande;
 import fr.eni_ecole.expeditor.dao.DAOUtilisateur;
 import fr.eni_ecole.expeditor.utils.OutilsString;
 
@@ -70,8 +71,9 @@ public class Connexion extends HttpServlet {
 		String motdepasse = request.getParameter("pass");
 		Utilisateur user = new Utilisateur();
 		RequestDispatcher dp = null;
-
-		try{			
+		
+		try{		
+			request.getSession().setAttribute("nbCmdAttentes", DAOCommande.getCommandeEnAttente());
 			if(request.getSession().getAttribute("user") == null){
 				user = DAOUtilisateur.rechercher(identifiant,OutilsString.convertTOMD5(motdepasse));
 				if(user == null){
@@ -83,19 +85,19 @@ public class Connexion extends HttpServlet {
 					//Si c'est un employe => écran commande
 					//Si c'est un manager => écran gestion des articles
 					if("employe".equals(user.getStatut())){
-						dp = request.getRequestDispatcher("/gestionCommande");
+						dp = request.getRequestDispatcher("/employe/commande");
 					}else{
-						dp = request.getRequestDispatcher("/articles");
-					}
+						dp = request.getRequestDispatcher("/manager/articles");
+						}
 					dp.forward(request, response);
 				}			
 				
 			}else{
 				user = (Utilisateur)request.getSession().getAttribute("user");
-				if(user.getStatut() == ""){
-					dp = request.getRequestDispatcher("/gestionCommande");
+				if("employe".equals(user.getStatut())){
+					dp = request.getRequestDispatcher("/employe/commande");
 				}else{
-					dp = request.getRequestDispatcher("/articles");
+					dp = request.getRequestDispatcher("/manager/articles");
 				}
 				dp.forward(request, response);
 			}
