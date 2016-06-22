@@ -73,10 +73,10 @@ public class GestionCommande extends HttpServlet
 			lines.add(line);
 		}
 		
-		for (String l : lines)
+		for (String l : lines.subList(1, lines.size()))
 		{
 			String[] strings = l.split(",");
-			String numCommande = strings[1].replace("Cmd N° ", "");
+			String numCommande = strings[1].substring(8);
 			
 			if (DAOCommande.getCommande(Integer.parseInt(numCommande)).getEtat().equals("En attente"))
 			{

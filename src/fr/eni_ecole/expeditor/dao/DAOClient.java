@@ -57,7 +57,7 @@ public class DAOClient
 	 * @return ArrayList<Client> : la liste des Clients
 	 * @throws SQLException
 	 */
-	public static ArrayList<Client> getAlleClient() throws SQLException
+	public static ArrayList<Client> getAllClient() throws SQLException
 	{
 		ArrayList<Client> lesClients = new ArrayList<Client>();
 		

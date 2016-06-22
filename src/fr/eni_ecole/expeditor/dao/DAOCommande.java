@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.plaf.synth.SynthScrollPaneUI;
-
 import fr.eni_ecole.expeditor.bean.Commande;
 import fr.eni_ecole.expeditor.bean.Utilisateur;
 import fr.eni_ecole.expeditor.bean.enums.EtatCommande;
@@ -15,8 +13,8 @@ import fr.eni_ecole.expeditor.bean.enums.EtatCommande;
 public class DAOCommande 
 {
 	/**
-	 * Mï¿½thode en charge de rï¿½cupï¿½rer une Commande
-	 * @param numCommande : numï¿½ro de la Commande ï¿½ rï¿½cupï¿½rer
+	 * Méthode en charge de rï¿½cupï¿½rer une Commande
+	 * @param numCommande : numéro de la Commande ï¿½ rï¿½cupï¿½rer
 	 * @return Objet Commande
 	 * @throws SQLException
 	 */
@@ -31,7 +29,7 @@ public class DAOCommande
 		try
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("SELECT numCli, date, etat, poidsTotal, idUser FROM COMMANDE WHERE num = ?");
+			rqt = cnx.prepareStatement("SELECT num, numCli, date, etat, poidsTotal, idUser FROM COMMANDE WHERE num = ?");
 			rqt.setInt(1, numCommande);
 			rs = rqt.executeQuery();
 			
