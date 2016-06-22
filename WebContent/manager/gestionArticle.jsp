@@ -5,10 +5,13 @@
 	ArrayList<Article> listeArticle = (ArrayList<Article>) request.getSession().getAttribute("listeArticles");
 	int index = 0;
 %>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/gestionArticle.js"></script>
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/gestionArticle.js"></script>
 <div style="float: right;">
-	<button type="button" class="btn btn-primary" data-toggle="modal"
-		data-target="#ajoutArticle">Ajouter</button>
+	<button type="button" class="btn btn-success" data-toggle="modal"
+		data-target="#detailArticle">
+		<span class=" glyphicon glyphicon-plus"></span> Ajouter
+	</button>
 </div>
 <table class="table table-striped">
 	<thead>
@@ -28,7 +31,9 @@
 			<td id=<%=i%>><%=unArticle.getLibelle()%></td>
 			<td id=<%=i%>><%=unArticle.getPoids()%> g</td>
 			<td id=<%=i%>><%=unArticle.getDescription()%></td>
-			<td><button type="button" class="btn btn-success">
+			<td><button type="button" class="btn btn-success"
+					data-toggle="modal" data-target="#detailArticle"
+					data-id=<%=unArticle.getRef()%> onclick="get_article(this)">
 					<span class="glyphicon glyphicon-pencil"></span>
 				</button>
 				<button type="button" class="btn btn-danger"
@@ -42,7 +47,7 @@
 		%>
 	</tbody>
 </table>
-<div class="modal fade" id="ajoutArticle" role="dialog">
+<div class="modal fade" id="detailArticle" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -88,6 +93,14 @@
 	</div>
 </div>
 <script>
+	function get_article(id) {
+		$.ajax({
+			url : "manager/articles",
+			method : "GET",
+			data : "action=get_article&reference=" + $(id)[0].dataset.id
+		});
+	}
+
 	function delete_article(id) {
 		$.ajax({
 			url : "manager/articles",
@@ -102,7 +115,14 @@
 			method : "POST",
 			data : "action=add_article&libelle=" + $("#libelleArticle").val()
 					+ "&description=" + $("#descriptionArticle").val()
-					+ "&poids="+ $("#poidsArticle").val()
+					+ "&poids=" + $("#poidsArticle").val(),
+			success : function() {
+				$.toaster({
+					priority : 'success',
+					title : 'Notice',
+					message : 'Article enregistré !'
+				});
+			}
 		});
 	}
 </script>
