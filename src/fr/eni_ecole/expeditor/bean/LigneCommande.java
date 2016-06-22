@@ -12,7 +12,7 @@ public class LigneCommande implements Serializable
 	private static final long serialVersionUID = -1445841740122843037L;
 	
 	// Attributs
-	private String numCommande;
+	private int numCommande;
 	private String refArticle;
 	private int quantite;
 	
@@ -21,7 +21,7 @@ public class LigneCommande implements Serializable
 	{
 		super();
 	}
-	public LigneCommande(String numCommande, String refArticle, int quantite) 
+	public LigneCommande(int numCommande, String refArticle, int quantite) 
 	{
 		super();
 		this.numCommande = numCommande;
@@ -30,10 +30,10 @@ public class LigneCommande implements Serializable
 	}
 	
 	// Accesseurs
-	public String getNumCommande() {
+	public int getNumCommande() {
 		return numCommande;
 	}
-	public void setNumCommande(String numCommande) {
+	public void setNumCommande(int numCommande) {
 		this.numCommande = numCommande;
 	}
 	public String getRefArticle() {

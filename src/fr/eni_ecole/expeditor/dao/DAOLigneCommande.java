@@ -35,7 +35,7 @@ public class DAOLigneCommande
 			while (rs.next())
 			{
 				uneLigneCommande = new LigneCommande(
-									rs.getString("numCommande"),
+									rs.getInt("numCommande"),
 									rs.getString("refArticle"),
 									rs.getInt("quantite")
 						);
