@@ -98,16 +98,20 @@
 </div>
 <script>
 	function get_article(id) {
-		$.getJSON("/manager/articles", {
-			"reference" : id,
-			"action" : "get_article"
-		}).done(function(data) {
-			$("#referenceArticle").text(data.ref);
-			$("#libelleArticle").text(data.libelle);
-			$("#descriptionArticle").text(data.description);
-			$("#poidsArticle").text(data.poids);
 
-		})
+		$.ajax({
+			type : "GET",
+			url : "manager/articles",
+			data : "action=get_article&reference=" + $(id)[0].dataset.id,
+			dataType : 'json',
+			success : function(data) {
+				$("#referenceArticle").val(data.ref);
+				$("#libelleArticle").val(data.libelle);
+				$("#descriptionArticle").val(data.description);
+				$("#poidsArticle").val(data.poids);
+			}
+		});
+
 	}
 
 	function delete_article(id) {

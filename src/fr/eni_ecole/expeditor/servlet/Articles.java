@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-
-
+import com.google.gson.Gson;
 
 import fr.eni_ecole.expeditor.bean.Article;
 import fr.eni_ecole.expeditor.dao.DAOArticle;
@@ -103,23 +101,13 @@ public class Articles extends HttpServlet {
 				e.printStackTrace();
 			}
 		} else if ("get_article".equals(action)) {
-			
-			/*PrintWriter out = null;
-			String monJson = null;
+
+			PrintWriter out = null;
 			Article monArticle = new Article();
-			ObjectMapper mapper = new ObjectMapper();
+			Gson gson = new Gson();
 			try {
 				monArticle = DAOArticle.getArticle(request.getParameter("reference"));
 			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			try {
-				monJson = mapper.writeValueAsString(monArticle);
-			} catch (JsonGenerationException e) {
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			try {
@@ -127,8 +115,8 @@ public class Articles extends HttpServlet {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			out.println(monJson);
-			out.flush();*/
+			out.println(gson.toJson(monArticle));
+			out.flush();
 
 		} else if ("delete_article".equals(action)) {
 			System.out.println("delete_article");
