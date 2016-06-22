@@ -19,7 +19,7 @@ import fr.eni_ecole.expeditor.bean.Commande;
 /**
  * Servlet implementation class GestionCommande
  */
-@WebServlet("/commande")
+@WebServlet("/employe/commande")
 public class GestionCommande extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
