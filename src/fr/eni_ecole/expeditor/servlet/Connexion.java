@@ -70,15 +70,7 @@ public class Connexion extends HttpServlet {
 		String motdepasse = request.getParameter("pass");
 		Utilisateur user = new Utilisateur();
 		RequestDispatcher dp = null;
-//		try {
-//			System.out.println(OutilsString.convertTOMD5("mdp123"));
-//			System.out.println(OutilsString.convertTOMD5("hellokitty"));
-//			System.out.println(OutilsString.convertTOMD5("goldorakdu44"));
-//			System.out.println(OutilsString.convertTOMD5("skywalker86"));
-//		} catch (NoSuchAlgorithmException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+
 		try{			
 			if(request.getSession().getAttribute("user") == null){
 				user = DAOUtilisateur.rechercher(identifiant,OutilsString.convertTOMD5(motdepasse));
@@ -91,9 +83,9 @@ public class Connexion extends HttpServlet {
 					//Si c'est un employe => écran commande
 					//Si c'est un manager => écran gestion des articles
 					if("employe".equals(user.getStatut())){
-						dp = request.getRequestDispatcher("/employe/gestionCommande.jsp");
+						dp = request.getRequestDispatcher("/gestionCommande");
 					}else{
-						dp = request.getRequestDispatcher("/manager/gestionArticle.jsp");
+						dp = request.getRequestDispatcher("/articles");
 					}
 					dp.forward(request, response);
 				}			
@@ -101,9 +93,9 @@ public class Connexion extends HttpServlet {
 			}else{
 				user = (Utilisateur)request.getSession().getAttribute("user");
 				if(user.getStatut() == ""){
-					dp = request.getRequestDispatcher("/employe/gestionCommande.jsp");
+					dp = request.getRequestDispatcher("/gestionCommande");
 				}else{
-					dp = request.getRequestDispatcher("/manager/gestionArticle.jsp");
+					dp = request.getRequestDispatcher("/articles");
 				}
 				dp.forward(request, response);
 			}
