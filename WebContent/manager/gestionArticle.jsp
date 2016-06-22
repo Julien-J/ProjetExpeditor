@@ -5,7 +5,7 @@
 	ArrayList<Article> listeArticle = (ArrayList<Article>) request.getSession().getAttribute("listeArticles");
 	int index = 0;
 %>
-<script type="text/javascript" src="js/gestionArticle.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/gestionArticle.js"></script>
 <div style="float: right;">
 	<button type="button" class="btn btn-primary" data-toggle="modal"
 		data-target="#ajoutArticle">Ajouter</button>
