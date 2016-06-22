@@ -1,3 +1,6 @@
+<%
+	String menu = "";
+%>
 <%@include file="/fragments/haut.jspf" %>
 <%@ page import="fr.eni_ecole.expeditor.bean.*, java.util.*, java.util.regex.*, java.text.*"%>
 <%
