@@ -3,7 +3,9 @@ package fr.eni_ecole.expeditor.servlet;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.eni_ecole.expeditor.bean.Commande;
+import fr.eni_ecole.expeditor.dao.DAOCommande;
 
 /**
  * Servlet implementation class GestionCommande
@@ -25,39 +28,62 @@ public class GestionCommande extends HttpServlet
        
     public GestionCommande() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		processRequest(request, response);
+		try {
+			processRequest(request, response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		doGet(request, response);
+		try {
+			processRequest(request, response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException 
 	{
 		RequestDispatcher dispatcher = null;
 		
-		getFirstCommand();
+		Commande commandeATraiter = getFirstCommand();
+		
+		request.getSession().setAttribute("commandeATraiter", commandeATraiter);
 		dispatcher = request.getRequestDispatcher("/employe/gestionCommande.jsp"); 
 		dispatcher.forward(request, response);
 	}
 	
-	private void getFirstCommand() throws IOException
+	private Commande getFirstCommand() throws IOException, SQLException
 	{
 		BufferedReader reader = new BufferedReader(new FileReader(getServletContext().getRealPath("ressources/commandes.csv")));
 		List<String> lines = new ArrayList<>();
+		
+		Commande firstCommand = null;
 		String line = null;
+		
 		while ((line = reader.readLine()) != null) 
 		{
 			lines.add(line);
 		}
 		
-		System.out.println(lines.get(1));
+		for (String l : lines)
+		{
+			String[] strings = l.split(",");
+			String numCommande = strings[1].replace("Cmd N° ", "");
+			
+			if (DAOCommande.getCommande(Integer.parseInt(numCommande)).getEtat().equals("En attente"))
+			{
+				firstCommand = DAOCommande.getCommande(Integer.parseInt(numCommande));
+			}
+		}
+		
+		return firstCommand;
 	}
 }

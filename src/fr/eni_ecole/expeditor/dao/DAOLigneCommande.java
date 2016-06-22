@@ -16,7 +16,7 @@ public class DAOLigneCommande
 	 * @return ArrayList<LigneCommande> : la liste des lignes composant la commande
 	 * @throws SQLException
 	 */
-	public static ArrayList<LigneCommande> getLignes(String numCommande) throws SQLException
+	public static ArrayList<LigneCommande> getLignes(int numCommande) throws SQLException
 	{
 		ArrayList<LigneCommande> lesLignesCommande = new ArrayList<LigneCommande>();
 		
@@ -28,7 +28,7 @@ public class DAOLigneCommande
 		{
 			cnx = AccesBase.getConnect();
 			rqt = cnx.prepareStatement("SELECT * FROM LIGNE_COMMANDE WHERE numCommande = ?");			
-			rqt.setString(1, numCommande);
+			rqt.setInt(1, numCommande);
 			rs = rqt.executeQuery();
 			
 			LigneCommande uneLigneCommande;

@@ -20,7 +20,7 @@ public class DAOCommande
 	 * @return Objet Commande
 	 * @throws SQLException
 	 */
-	public static Commande getCommande(String numCommande) throws SQLException
+	public static Commande getCommande(int numCommande) throws SQLException
 	{
 		Commande laCommande = new Commande();
 		
@@ -32,7 +32,7 @@ public class DAOCommande
 		{
 			cnx = AccesBase.getConnect();
 			rqt = cnx.prepareStatement("SELECT numCli, date, etat, poidsTotal, idUser FROM COMMANDE WHERE num = ?");
-			rqt.setString(1, numCommande);
+			rqt.setInt(1, numCommande);
 			rs = rqt.executeQuery();
 			
 			if (rs.next())
@@ -43,7 +43,7 @@ public class DAOCommande
 				laCommande.setEtat(EtatCommande.getEnum(rs.getString("etat")));
 				laCommande.setPoidsTotal(rs.getInt("poidsTotal"));
 				laCommande.setIdEmploye(rs.getString("idUser"));
-				laCommande.setLesLignes(DAOLigneCommande.getLignes(rs.getString("num")));
+				laCommande.setLesLignes(DAOLigneCommande.getLignes(rs.getInt("num")));
 			}
 			else
 			{
@@ -87,7 +87,7 @@ public class DAOCommande
 									rs.getTimestamp("date"),
 									rs.getInt("poidsTotal"),
 									EtatCommande.getEnum(rs.getString("etat")),
-									DAOLigneCommande.getLignes(rs.getString("num"))
+									DAOLigneCommande.getLignes(rs.getInt("num"))
 						);
 				
 				System.out.println(uneCommande.getClient());
