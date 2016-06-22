@@ -12,7 +12,7 @@
 %>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/listeCommande.js"></script>
 
-<table id="tabCommande" class="table table-striped">
+<table id="tabCommande" class="table table-striped sortable">
     <thead>
       <tr>
       	<th>Numéro</th>
