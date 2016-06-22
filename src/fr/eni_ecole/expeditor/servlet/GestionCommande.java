@@ -1,6 +1,7 @@
 package fr.eni_ecole.expeditor.servlet;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,16 +45,18 @@ public class GestionCommande extends HttpServlet
 		
 	}
 	
-	private Commande getFirstCommand()
+	private Commande getFirstCommand() throws IOException
 	{
 		BufferedReader reader = new BufferedReader(new FileReader(""));
 		List<String> lines = new ArrayList<>();
 		String line = null;
 		while ((line = reader.readLine()) != null) 
 		{
-		    lines.add(line);
+			
 		}
 		
 		System.out.println(lines.get(1));
+		
+		return null;
 	}
 }

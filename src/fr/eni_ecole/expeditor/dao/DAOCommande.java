@@ -97,4 +97,36 @@ public class DAOCommande
 		}
 		return lesCommandes;
 	}
+	
+	/**
+	 * Méthode en charge de retourner le nombre de commandes en attente
+	 * @return nbCommandeEA : int
+	 * @throws SQLException
+	 */
+	public static int getCommandeEnAttente() throws SQLException
+	{
+		int nbCommandeEA = 0;
+		
+		Connection cnx = null;
+		PreparedStatement rqt = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			cnx = AccesBase.getConnect();
+			rqt = cnx.prepareStatement("SELECT COUNT(*) FROM COMMANDE WHERE etat = 'En attente'");
+			rqt.executeUpdate();
+			while (rs.next())
+			{
+				nbCommandeEA = rs.getInt(1);
+			}
+		}
+		finally 
+		{
+			if (rs!=null) rs.close();
+			if (rqt!=null) rqt.close();
+			if (cnx!=null) cnx.close();
+		}
+		return nbCommandeEA;
+	}
 }
