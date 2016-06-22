@@ -95,13 +95,13 @@
 </div>
 <script>
 	function get_article(id) {
-		$.ajax({
-			url : "manager/articles",
-			method : "GET",
-			data : "action=get_article&reference=" + $(id)[0].dataset.id,
-			success : success,
-			dataType : "json"
-		});
+		$.getJSON( "/manager/articles", {"reference" : id, "action" : "get_article" }).done( function(data){
+			$("#referenceArticle").text(data.ref);
+			$("#libelleArticle").text(data.libelle);
+			$("#descriptionArticle").text(data.description);
+			$("#poidsArticle").text(data.poids);
+
+		})
 	}
 
 	function delete_article(id) {
@@ -128,6 +128,7 @@
 			}
 		});
 	}
+	
 </script>
 <%@include file="/fragments/bas.jspf"%>
 

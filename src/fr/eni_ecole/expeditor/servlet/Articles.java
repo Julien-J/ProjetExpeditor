@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-
 import fr.eni_ecole.expeditor.bean.Article;
 import fr.eni_ecole.expeditor.dao.DAOArticle;
 import jdk.nashorn.internal.ir.debug.JSONWriter;
@@ -103,7 +102,32 @@ public class Articles extends HttpServlet {
 			}
 		} else if ("get_article".equals(action)) {
 			
-
+			/*PrintWriter out = null;
+			String monJson = null;
+			Article monArticle = new Article();
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				monArticle = DAOArticle.getArticle(request.getParameter("reference"));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				monJson = mapper.writeValueAsString(monArticle);
+			} catch (JsonGenerationException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				out = response.getWriter();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			out.println(monJson);
+			out.flush();
+*/
 		} else if ("delete_article".equals(action)) {
 			System.out.println("delete_article");
 			String reference = request.getParameter("reference");
