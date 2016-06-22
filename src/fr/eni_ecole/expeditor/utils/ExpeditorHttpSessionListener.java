@@ -26,12 +26,14 @@ public class ExpeditorHttpSessionListener implements HttpSessionListener{
 
 	@Override
 	public void sessionDestroyed(HttpSessionEvent event) {
-		Utilisateur userConnecte = (Utilisateur)event.getSession().getAttribute("user");		
-		if("employe".equals(userConnecte.getStatut())){			
-			try {
-				DAOCommande.resetCommandeEnCours(userConnecte);
-			} catch (SQLException e) {
-				e.printStackTrace();
+		if(event != null & event.getSession() != null){
+			Utilisateur userConnecte = (Utilisateur)event.getSession().getAttribute("user");		
+			if(userConnecte != null & "employe".equals(userConnecte.getStatut())){			
+				try {
+					DAOCommande.resetCommandeEnCours(userConnecte);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		

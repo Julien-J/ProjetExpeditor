@@ -69,14 +69,17 @@ public class Deconnexion extends HttpServlet {
 		if("employe".equals(userConnecte.getStatut())){			
 			try {
 				DAOCommande.resetCommandeEnCours(userConnecte);
+				request.getSession(false).invalidate();
+				response.sendRedirect(request.getContextPath()+"/");
 			} catch (SQLException e) {
 				request.setAttribute("erreur", e);
 				request.getRequestDispatcher("/erreur.jsp").forward(request, response);
 			}
+		}else{
+			request.getSession(false).invalidate();
+			response.sendRedirect(request.getContextPath()+"/");
 		}
 		
-		request.getSession(false).invalidate();
-		response.sendRedirect(request.getContextPath()+"/");
 	}
 	
 
