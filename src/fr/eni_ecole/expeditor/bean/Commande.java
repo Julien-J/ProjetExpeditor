@@ -19,7 +19,7 @@ public class Commande implements Serializable
 	private static final long serialVersionUID = 1277087965945937430L;
 	
 	// Attributs
-	private String num;
+	private int num;
 	private String numClient;
 	private String idEmploye;
 	private Date date;
@@ -33,7 +33,7 @@ public class Commande implements Serializable
 		super();
 	}
 
-	public Commande(String num, String numClient, String idEmploye, Date date, int poidsTotal, EtatCommande etat, ArrayList<LigneCommande> lesLignes) 
+	public Commande(int num, String numClient, String idEmploye, Date date, int poidsTotal, EtatCommande etat, ArrayList<LigneCommande> lesLignes) 
 	{
 		super();
 		this.num = num;
@@ -46,11 +46,11 @@ public class Commande implements Serializable
 	}
 	
 	// Accesseurs
-	public String getNum() {
+	public int getNum() {
 		return num;
 	}
 
-	public void setNum(String num) {
+	public void setNum(int num) {
 		this.num = num;
 	}
 

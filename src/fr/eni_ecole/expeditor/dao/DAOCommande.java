@@ -34,7 +34,7 @@ public class DAOCommande
 			
 			if (rs.next())
 			{
-				laCommande.setNum(rs.getString("num"));
+				laCommande.setNum(rs.getInt("num"));
 				laCommande.setNumClient(rs.getString("numCli"));
 				laCommande.setDate(rs.getDate("date"));
 				laCommande.setEtat(EtatCommande.getEnum(rs.getString("etat")));
@@ -78,7 +78,7 @@ public class DAOCommande
 			while (rs.next())
 			{
 				uneCommande = new Commande(
-									rs.getString("num"),
+									rs.getInt("num"),
 									rs.getString("numCli"),
 									rs.getString("idUser"),
 									rs.getDate("date"),
@@ -115,7 +115,7 @@ public class DAOCommande
 		{
 			cnx = AccesBase.getConnect();
 			rqt = cnx.prepareStatement("SELECT COUNT(*) FROM COMMANDE WHERE etat = 'En attente'");
-			rqt.executeQuery();
+			rs = rqt.executeQuery();
 			while (rs.next())
 			{
 				nbCommandeEA = rs.getInt(1);
