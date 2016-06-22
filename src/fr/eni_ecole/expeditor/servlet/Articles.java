@@ -13,8 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+
 import fr.eni_ecole.expeditor.bean.Article;
 import fr.eni_ecole.expeditor.dao.DAOArticle;
+import jdk.nashorn.internal.ir.debug.JSONWriter;
 
 /**
  * Servlet implementation class Articles
@@ -98,6 +101,8 @@ public class Articles extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		} else if ("get_article".equals(action)) {
+			
 
 		} else if ("delete_article".equals(action)) {
 			System.out.println("delete_article");

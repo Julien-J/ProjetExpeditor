@@ -1,3 +1,4 @@
+<% String menu="articles"; %>
 <%@include file="/fragments/haut.jspf"%>
 <%@ page
 	import="fr.eni_ecole.expeditor.bean.*, java.util.*, java.text.*"%>
@@ -97,7 +98,9 @@
 		$.ajax({
 			url : "manager/articles",
 			method : "GET",
-			data : "action=get_article&reference=" + $(id)[0].dataset.id
+			data : "action=get_article&reference=" + $(id)[0].dataset.id,
+			success : success,
+			dataType : "json"
 		});
 	}
 
