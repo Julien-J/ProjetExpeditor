@@ -7,16 +7,9 @@
 	int index = 0;
 %>
 
-<select class="form-control">
-  <option>Tous</option>
-  <option>En attente</option>
-  <option>En cours</option>
-</select>
-
 <table class="table table-striped">
     <thead>
       <tr>
-        <th>Numéro</th>
         <th>Client</th>
         <th>Date</th>
         <th>Nombre d'articles</th>
@@ -30,7 +23,13 @@
 			for (Commande uneCommande : listeCommande) {
 		%>
 		<tr>
-			<td id=<%=i%>><%=uneCommande.getClient().getNom()%></td>
+			<%
+				String str = "";
+				if (uneCommande.getClient() != null){
+					str = uneCommande.getClient().getNom();
+				}
+			%>
+			<td id=<%=i%>><%=str %></td>
 			<td id=<%=i%>><%=uneCommande.getDate() %> </td>
 			<%
 				int qte = 0;
@@ -42,10 +41,7 @@
 			<td id=<%=i%>><%=uneCommande.getEtat()%></td>
 			
 			<td><button type="button" class="btn btn-success">
-					<span class="glyphicon glyphicon-pencil"></span>
-				</button>
-				<button type="button" class="btn btn-danger">
-					<span class="glyphicon glyphicon-trash"></span>
+					<span class="glyphicon glyphicon-eye-open"></span>
 				</button></td>
 		</tr>
 		<%

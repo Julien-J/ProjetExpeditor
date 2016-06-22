@@ -1,12 +1,21 @@
 package fr.eni_ecole.expeditor.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import fr.eni_ecole.expeditor.bean.Article;
+import fr.eni_ecole.expeditor.bean.Commande;
+import fr.eni_ecole.expeditor.dao.DAOArticle;
+import fr.eni_ecole.expeditor.dao.DAOCommande;
 
 /**
  * Servlet implementation class Commandes
@@ -59,13 +68,22 @@ public class Commandes extends HttpServlet {
 	}
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) {
-		try { 
+		RequestDispatcher dispatcher;
+		//String action = request.getParameter("action");
+		//if ("getArticles".equals(action)) {
+		try {
+			ArrayList<Commande> lesCommandes = new ArrayList<Commande>();
+			try {
+				lesCommandes = DAOCommande.getAllCommande();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			request.getSession().setAttribute("listeCommandes", lesCommandes);
 			request.getRequestDispatcher("/manager/listeCommande.jsp").forward(request, response);
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 }
