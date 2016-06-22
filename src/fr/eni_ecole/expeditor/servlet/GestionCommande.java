@@ -1,13 +1,12 @@
 package fr.eni_ecole.expeditor.servlet;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,21 +41,23 @@ public class GestionCommande extends HttpServlet
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
+		RequestDispatcher dispatcher = null;
 		
+		getFirstCommand();
+		dispatcher = request.getRequestDispatcher("/employe/gestionCommande.jsp"); 
+		dispatcher.forward(request, response);
 	}
 	
-	private Commande getFirstCommand() throws IOException
+	private void getFirstCommand() throws IOException
 	{
-		BufferedReader reader = new BufferedReader(new FileReader(""));
+		BufferedReader reader = new BufferedReader(new FileReader(getServletContext().getRealPath("ressources/commandes.csv")));
 		List<String> lines = new ArrayList<>();
 		String line = null;
 		while ((line = reader.readLine()) != null) 
 		{
-			
+			lines.add(line);
 		}
 		
 		System.out.println(lines.get(1));
-		
-		return null;
 	}
 }

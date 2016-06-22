@@ -115,7 +115,7 @@ public class DAOCommande
 		{
 			cnx = AccesBase.getConnect();
 			rqt = cnx.prepareStatement("SELECT COUNT(*) FROM COMMANDE WHERE etat = 'En attente'");
-			rqt.executeUpdate();
+			rqt.executeQuery();
 			while (rs.next())
 			{
 				nbCommandeEA = rs.getInt(1);
