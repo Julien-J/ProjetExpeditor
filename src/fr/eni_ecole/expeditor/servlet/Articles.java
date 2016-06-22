@@ -19,18 +19,17 @@ import fr.eni_ecole.expeditor.dao.DAOArticle;
 /**
  * Servlet implementation class Articles
  */
-@WebServlet("/articles")
+@WebServlet("/manager/articles")
 public class Articles extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Articles() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public Articles() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see Servlet#init(ServletConfig)
@@ -48,47 +47,54 @@ public class Articles extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		super.service(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			ArrayList<Article> mesArticles = new ArrayList<Article>();
+
+		RequestDispatcher dispatcher;
+		//String action = request.getParameter("action");
+		//if ("getArticles".equals(action)) {
 			try {
-				mesArticles = DAOArticle.getAllArticle();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				ArrayList<Article> mesArticles = new ArrayList<Article>();
+				try {
+					mesArticles = DAOArticle.getAllArticle();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				request.getSession().setAttribute("listeArticles", mesArticles);
+				request.getRequestDispatcher("/manager/gestionArticle.jsp").forward(request, response);
+			} catch (ServletException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			request.getSession().setAttribute("listeArticles", mesArticles); 
-			request.getRequestDispatcher("/manager/gestionArticle.jsp").forward(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-		
-	}
+	//}
 
-	
-	
 }
-
