@@ -23,11 +23,11 @@ public enum EtatCommande
     
     public static EtatCommande getEnum(String value)
     {
-    	if (value == "En attente")
+    	if (value.equals("En attente"))
     	{
     		return ATTENTE;
     	}
-    	else if (value == "En cours de traitement")
+    	else if (value.equals("En cours de traitement"))
     	{
     		return ENCOURS;
     	}
