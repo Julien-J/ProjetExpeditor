@@ -37,7 +37,7 @@ public class DAOCommande
 			{
 				laCommande.setNum(rs.getInt("num"));
 				laCommande.setNumClient(rs.getString("numCli"));
-				laCommande.setDate(rs.getDate("date"));
+				laCommande.setDate(rs.getTimestamp("date"));
 				laCommande.setEtat(EtatCommande.getEnum(rs.getString("etat")));
 				laCommande.setPoidsTotal(rs.getInt("poidsTotal"));
 				laCommande.setIdEmploye(rs.getString("idUser"));

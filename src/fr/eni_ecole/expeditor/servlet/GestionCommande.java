@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.eni_ecole.expeditor.bean.Commande;
+import fr.eni_ecole.expeditor.bean.enums.EtatCommande;
 import fr.eni_ecole.expeditor.dao.DAOCommande;
 
 /**
@@ -60,6 +63,13 @@ public class GestionCommande extends HttpServlet
 		dispatcher.forward(request, response);
 	}
 	
+	/**
+	 * Méthode en charge de parcourir le fichier de commande 
+	 * et de retourner la première commande en attente
+	 * @return Objet Commande
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	private Commande getFirstCommand() throws IOException, SQLException
 	{
 		BufferedReader reader = new BufferedReader(new FileReader(getServletContext().getRealPath("ressources/commandes.csv")));
@@ -78,7 +88,7 @@ public class GestionCommande extends HttpServlet
 			String[] strings = l.split(",");
 			String numCommande = strings[1].substring(8);
 			
-			if (DAOCommande.getCommande(Integer.parseInt(numCommande)).getEtat().equals("En attente"))
+			if (DAOCommande.getCommande(Integer.parseInt(numCommande)).getEtat() == EtatCommande.ATTENTE)
 			{
 				firstCommand = DAOCommande.getCommande(Integer.parseInt(numCommande));
 			}
