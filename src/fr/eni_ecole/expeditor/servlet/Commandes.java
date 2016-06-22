@@ -69,21 +69,40 @@ public class Commandes extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) {
 		RequestDispatcher dispatcher;
-		//String action = request.getParameter("action");
-		//if ("getArticles".equals(action)) {
-		try {
-			ArrayList<Commande> lesCommandes = new ArrayList<Commande>();
+		
+		String action = request.getParameter("action");
+		if ("view_commande".equals(action)){
 			try {
-				lesCommandes = DAOCommande.getAllCommande();
-			} catch (SQLException e) {
+				Commande commande = new Commande();
+				String numCommande = request.getParameter("numero");
+				try {
+					commande = DAOCommande.getCommande(numCommande);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				request.getSession().setAttribute("Commande", commande);
+				request.getRequestDispatcher("/manager/listeCommande.jsp").forward(request, response);
+			} catch (ServletException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			request.getSession().setAttribute("listeCommandes", lesCommandes);
-			request.getRequestDispatcher("/manager/listeCommande.jsp").forward(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		}else{
+			try {
+				ArrayList<Commande> lesCommandes = new ArrayList<Commande>();
+				try {
+					lesCommandes = DAOCommande.getAllCommande();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				request.getSession().setAttribute("listeCommandes", lesCommandes);
+				request.getRequestDispatcher("/manager/listeCommande.jsp").forward(request, response);
+			} catch (ServletException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+		
 	}
 }

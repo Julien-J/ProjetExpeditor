@@ -1,3 +1,7 @@
+<%
+	String menu = "commandes";
+%>
+
 <%@include file="/fragments/haut.jspf" %>
 
 <%@ page
@@ -11,6 +15,7 @@
 <table class="table table-striped">
     <thead>
       <tr>
+      	<th>Numéro</th>
         <th>Client</th>
         <th>Date</th>
         <th>Nombre d'articles</th>
@@ -24,6 +29,7 @@
 			for (Commande uneCommande : listeCommande) {
 		%>
 		<tr>
+			<td id id=<%=i%>><%=uneCommande.getNum() %></td>
 			<%
 				String str = "";
 				if (uneCommande.getClient() != null){
@@ -50,7 +56,7 @@
 			<td id=<%=i%>><%=qte%></td>
 			<td id=<%=i%>><%=uneCommande.getEtat()%></td>
 			
-			<td><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#detailCommande"><span class="glyphicon glyphicon-eye-open"></span></button></td>
+			<td><button type="button" data-id=<%=uneCommande.getNum()%> onclick="view_commande(this)" class="btn btn-info btn-lg" data-toggle="modal" data-target="#detailCommande"><span class="glyphicon glyphicon-eye-open"></span></button></td>
 		</tr>
 		<%
 			i++;
@@ -62,12 +68,23 @@
 <!-- Modal -->
 <div id="detailCommande" class="modal fade" role="dialog">
   <div class="modal-dialog">
-
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
+        <%
+			Commande maCommande = (Commande) request.getSession().getAttribute("Commande");
+        %>
+        <%--<%
+			Date date;
+			String maDateFr;
+			SimpleDateFormat formatter;
+
+			formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+			date = maCommande.getDate();
+			maDateFr = formatter.format(date);
+		--%> --%>
+        <h4 class="modal-title">Commande <%=maCommande.getNum() + " - " %></h4>
       </div>
       <div class="modal-body">
         <p>Some text in the modal.</p>
@@ -80,4 +97,13 @@
   </div>
 </div>
 
+<script>
+	function view_commande(id) {
+		$.ajax({
+			url : "manager/commandes",
+			method : "GET",
+			data : "action=view_commande&numero=" + $(id)[0].dataset.id
+		});
+	}
+</script>
 <%@include file="/fragments/bas.jspf" %>
