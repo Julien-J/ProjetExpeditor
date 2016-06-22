@@ -79,7 +79,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal">Enregistrer</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="add_article()">Enregistrer</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
 			</div>
 		</div>
@@ -88,11 +88,20 @@
 <script>
 	function delete_article(id) {
 		$.ajax({
-			url : "articles",
+			url : "manager/articles",
 			method : "POST",
 			data : "action=delete_article&reference="+$(id)[0].dataset.id
 		}); 
 	}
+	
+	function add_article() {
+		$.ajax({
+			url : "manager/articles",
+			method : "PUT",
+			data : "action=add_article&reference="+$(id)[0].dataset.id
+		}); 
+	}
+	
 </script>
 <%@include file="/fragments/bas.jspf"%>
 

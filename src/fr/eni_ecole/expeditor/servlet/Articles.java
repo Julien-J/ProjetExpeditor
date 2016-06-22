@@ -19,10 +19,9 @@ import fr.eni_ecole.expeditor.dao.DAOArticle;
 /**
  * Servlet implementation class Articles
  */
-@WebServlet("/articles")
+@WebServlet("/manager/articles")
 public class Articles extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -80,7 +79,13 @@ public class Articles extends HttpServlet {
 		System.out.println("début_article");
 		RequestDispatcher dispatcher;
 		String action = request.getParameter("action");
-		if ("delete_article".equals(action)) {
+		if ("add_article".equals(action)) {
+			System.out.println("add_article");
+			Article monArticle = new Article();
+			
+			
+			
+		} else if ("delete_article".equals(action)) {
 			System.out.println("delete_article");
 			String reference = request.getParameter("reference");
 			System.out.println(reference);
@@ -95,9 +100,7 @@ public class Articles extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-		else
-		{
+		} else {
 			System.out.println("liste_article");
 			try {
 				ArrayList<Article> mesArticles = new ArrayList<Article>();
