@@ -170,7 +170,7 @@ public class DAOCommande
 		ResultSet rs = null;
 		String sql = "SELECT COUNT(*) FROM COMMANDE "+
 					 "WHERE COMMANDE.idUser = ? AND etat = 'Traitée' "+
-					 "AND CONVERT(VARCHAR(10),COMMANDE.,110) = CONVERT(VARCHAR(10),GETDATE(),110)";
+					 "AND CONVERT(VARCHAR(10),COMMANDE.dateTraitement,110) = CONVERT(VARCHAR(10),GETDATE(),110)";
 		
 		try 
 		{

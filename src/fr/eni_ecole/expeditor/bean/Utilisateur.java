@@ -93,6 +93,7 @@ public class Utilisateur implements Serializable
 		try {
 			return DAOCommande.getCommandesTraitees(this.id);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			return 0;
 		}
 	}
