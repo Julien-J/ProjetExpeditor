@@ -82,9 +82,23 @@ public class Articles extends HttpServlet {
 		if ("add_article".equals(action)) {
 			System.out.println("add_article");
 			Article monArticle = new Article();
-			
-			
-			
+			String libelle = request.getParameter("libelle");
+			String description = request.getParameter("description");
+			Integer poids = Integer.parseInt(request.getParameter("poids"));
+			System.out.println(poids);
+			if (!libelle.isEmpty()) {
+				monArticle.setLibelle(libelle);
+			}
+			if (!description.isEmpty()) {
+				monArticle.setDescription(description);
+			}
+			monArticle.setPoids(poids);
+			try {
+				DAOArticle.insertArticle(monArticle);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
 		} else if ("delete_article".equals(action)) {
 			System.out.println("delete_article");
 			String reference = request.getParameter("reference");
