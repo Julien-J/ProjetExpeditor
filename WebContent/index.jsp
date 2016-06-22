@@ -1,3 +1,4 @@
+<% String menu = ""; %>
 <%@include file="/fragments/haut.jspf" %>
 
 <% if(session.getAttribute("user") == null ) { %>

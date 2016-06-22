@@ -133,9 +133,9 @@ public class DAOUtilisateur
 			{
 				unUtilisateur = new Utilisateur(
 									rs.getString("id"),
-									rs.getString("login"),
 									rs.getString("nom"),
 									rs.getString("prenom"),
+									rs.getString("login"),
 									rs.getString("mdp"),
 									rs.getString("statut")
 						);

@@ -13,8 +13,8 @@ import fr.eni_ecole.expeditor.bean.enums.EtatCommande;
 public class DAOCommande 
 {
 	/**
-	 * M�thode en charge de r�cup�rer une Commande
-	 * @param numCommande : num�ro de la Commande � r�cup�rer
+	 * M�thode en charge de r�cup�rer une Commande
+	 * @param numCommande : num�ro de la Commande � r�cup�rer
 	 * @return Objet Commande
 	 * @throws SQLException
 	 */
@@ -85,10 +85,10 @@ public class DAOCommande
 									rs.getTimestamp("date"),
 									rs.getInt("poidsTotal"),
 									EtatCommande.getEnum(rs.getString("etat")),
+									rs.getTimestamp("dateTraitement"),
 									DAOLigneCommande.getLignes(rs.getInt("num"))
 						);
 				
-				System.out.println(uneCommande.getClient());
 				lesCommandes.add(uneCommande);				
 			}		
 		}
@@ -149,6 +149,70 @@ public class DAOCommande
 			rqt = cnx.prepareStatement("UPDATE COMMANDE SET etat = 'En attente', idUser = NULL WHERE idUser = ? AND etat = 'En cours de traitement'");
 			rqt.setString(1, userConnecte.getId());
 			return rqt.executeUpdate() > 0;
+		}
+		finally 
+		{
+			if (rqt!=null) rqt.close();
+			if (cnx!=null) cnx.close();
+		}
+	}
+
+	/**
+	 * Méthode en charge de récupérer le nombre de commandes traitées dans la journée par
+	 * l'utilisateur passé en paramètre 
+	 * @param identifiant Identifiant de l'utilisateur passé en paramètre
+	 * @return Le nombre de commandes traitées
+	 * @throws SQLException 
+	 */
+	public static int getCommandesTraitees(String identifiant) throws SQLException {
+		Connection cnx = null;
+		PreparedStatement rqt = null;
+		ResultSet rs = null;
+		String sql = "SELECT COUNT(*) FROM COMMANDE "+
+					 "WHERE COMMANDE.idUser = ? AND etat = 'Traitée' "+
+					 "AND CONVERT(VARCHAR(10),COMMANDE.,110) = CONVERT(VARCHAR(10),GETDATE(),110)";
+		
+		try 
+		{
+			cnx = AccesBase.getConnect();
+			rqt = cnx.prepareStatement(sql);
+			rqt.setString(1, identifiant);
+			rs = rqt.executeQuery();
+			
+			if(rs.next()){
+				return rs.getInt(1);
+			}else{
+				return 0;
+			}
+			
+		}
+		finally 
+		{
+			if(rs!=null) rs.close();
+			if (rqt!=null) rqt.close();
+			if (cnx!=null) cnx.close();
+		}
+	}
+
+	/**
+	 * Méthode en charge de passer la commande à l'état traitée 
+	 * @param commande Commande concernée
+	 * @return Vrai si il y a eu des modifications sinon faux
+	 * @throws SQLException 
+	 */
+	public static boolean setEtatTraitee(Commande commande) throws SQLException{
+		Connection cnx = null;
+		PreparedStatement rqt = null;
+		String sql = "UPDATE COMMANDE SET etat='Traitée',dateTraitement=GETDATE() "+
+					 "WHERE num = ?";
+		
+		try 
+		{
+			cnx = AccesBase.getConnect();
+			rqt = cnx.prepareStatement(sql);
+			rqt.setInt(1, commande.getNum());
+			return rqt.executeUpdate() > 0;
+			
 		}
 		finally 
 		{

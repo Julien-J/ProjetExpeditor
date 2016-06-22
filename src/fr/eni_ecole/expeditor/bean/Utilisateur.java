@@ -1,6 +1,10 @@
 package fr.eni_ecole.expeditor.bean;
 
 import java.io.Serializable;
+import java.sql.SQLException;
+
+import fr.eni_ecole.expeditor.dao.DAOCommande;
+import fr.eni_ecole.expeditor.dao.DAOUtilisateur;
 
 /**
  * ProjectExpeditor Version 1.0
@@ -84,4 +88,12 @@ public class Utilisateur implements Serializable
 	public void setStatut(String statut) {
 		this.statut = statut;
 	}	
+	
+	public int getNbCmdesTraitee(){
+		try {
+			return DAOCommande.getCommandesTraitees(this.id);
+		} catch (SQLException e) {
+			return 0;
+		}
+	}
 }

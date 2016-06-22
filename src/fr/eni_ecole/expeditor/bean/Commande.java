@@ -23,6 +23,7 @@ public class Commande implements Serializable
 	private String numClient;
 	private String idEmploye;
 	private Date date;
+	private Date dateTraitement;
 	private int poidsTotal;
 	private EtatCommande etat;
 	private ArrayList<LigneCommande> lesLignes;
@@ -33,7 +34,7 @@ public class Commande implements Serializable
 		super();
 	}
 
-	public Commande(int num, String numClient, String idEmploye, Date date, int poidsTotal, EtatCommande etat, ArrayList<LigneCommande> lesLignes) 
+	public Commande(int num, String numClient, String idEmploye, Date date, int poidsTotal, EtatCommande etat,Date dateTraitement, ArrayList<LigneCommande> lesLignes) 
 	{
 		super();
 		this.num = num;
@@ -42,6 +43,7 @@ public class Commande implements Serializable
 		this.date = date;
 		this.poidsTotal = poidsTotal;
 		this.etat = etat;
+		this.dateTraitement = dateTraitement;
 		this.lesLignes = lesLignes;
 	}
 	
@@ -100,6 +102,14 @@ public class Commande implements Serializable
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Date getDateTraitement() {
+		return dateTraitement;
+	}
+
+	public void setDateTraitement(Date dateTraitement) {
+		this.dateTraitement = dateTraitement;
 	}
 
 	public int getPoidsTotal() {

@@ -49,7 +49,7 @@
 							+ ((Utilisateur)session.getAttribute("user")).getPrenom()%>
 				</div>
 				<div>
-					<%=nbCmd%> demande<%=nbCmd>1?"s":""%> en attente<%=nbCmd>1?"s":""%>
+					<%=nbCmd%> demande<%=nbCmd>1?"s":""%> en attente
 				</div>
 				<div>
 					<a class="pointer" onclick="reloadPage()" title="Rafraichir la page"><%= df.format(new Date())%></a>

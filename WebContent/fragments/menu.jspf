@@ -1,11 +1,17 @@
+<% String liMenu = (menu==null) || "".equals(menu)? "articles" : menu; %>
+<input type="hidden" id="menu" value="<%=liMenu%>"/>
 <ul class="nav nav-pills">
-  <li role="presentation" class="active">
+  <li role="presentation" class="liMenu" id="menu_articles" onclick="selectionMenu(this);">
   	<a href="<%=request.getContextPath()%>/manager/articles">Gestion des articles</a>
   </li>
-  <li role="presentation">
+  <li role="presentation" class="liMenu" id="menu_commandes" onclick="selectionMenu(this);"> 
   	<a href="<%=request.getContextPath()%>/manager/commandes">Gestion des commandes</a>
   </li>
-  <li role="presentation">
+  <li role="presentation" class="liMenu" id="menu_employes" onclick="selectionMenu(this);">
   	<a href="<%=request.getContextPath()%>/manager/employes">Gestion des employés</a>
   </li>
 </ul>
+
+<script type="text/javascript">
+ 	$("#menu_"+$("input#menu").val()).addClass("active");
+ </script>
