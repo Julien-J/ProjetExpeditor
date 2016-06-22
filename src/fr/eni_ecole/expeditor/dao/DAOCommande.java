@@ -144,7 +144,7 @@ public class DAOCommande
 		try 
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("UPDATE COMMANDE SET etat = 'en attente', idUser = NULL WHERE idUser = ?");
+			rqt = cnx.prepareStatement("UPDATE COMMANDE SET etat = 'En attente', idUser = NULL WHERE idUser = ?");
 			rqt.setString(1, userConnecte.getId());
 			rqt.executeQuery();
 			return rqt.executeUpdate() > 0;
