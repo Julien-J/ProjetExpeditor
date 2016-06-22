@@ -36,7 +36,7 @@
 				String dateFr;
 				SimpleDateFormat formatter;
 	
-				formatter = new SimpleDateFormat("dd/MM/yyyy");
+				formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				date = uneCommande.getDate();
 				dateFr = formatter.format(date);
 			%>

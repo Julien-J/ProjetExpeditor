@@ -84,7 +84,7 @@ public class DAOCommande
 									rs.getInt("num"),
 									rs.getString("numCli"),
 									rs.getString("idUser"),
-									rs.getDate("date"),
+									rs.getTimestamp("date"),
 									rs.getInt("poidsTotal"),
 									EtatCommande.getEnum(rs.getString("etat")),
 									DAOLigneCommande.getLignes(rs.getString("num"))
