@@ -11,8 +11,8 @@ import fr.eni_ecole.expeditor.bean.Client;
 public class DAOClient 
 {
 	/**
-	 * Méthode en charge de récupérer un Client
-	 * @param numClient : numéro du Client à récupérer
+	 * Mï¿½thode en charge de rï¿½cupï¿½rer un Client
+	 * @param numClient : numï¿½ro du Client ï¿½ rï¿½cupï¿½rer
 	 * @return Objet Client
 	 * @throws SQLException
 	 */
@@ -23,11 +23,10 @@ public class DAOClient
 		Connection cnx = null;
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
-		
 		try
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("SELECT nom, adresse FROM CLIENT WHERE num = ?");
+			rqt = cnx.prepareStatement("SELECT num, nom, adresse FROM CLIENT WHERE num = ?");
 			rqt.setString(1, numClient);
 			rs = rqt.executeQuery();
 			
@@ -48,11 +47,13 @@ public class DAOClient
 			if (rqt!=null) rqt.close();
 			if (cnx!=null) cnx.close();
 		}
+
+		System.out.println("Le client " +leClient);
 		return leClient;
 	}
 	
 	/**
-	 * Méthode en charge de récupérer tous les Clients en base
+	 * Mï¿½thode en charge de rï¿½cupï¿½rer tous les Clients en base
 	 * @return ArrayList<Client> : la liste des Clients
 	 * @throws SQLException
 	 */

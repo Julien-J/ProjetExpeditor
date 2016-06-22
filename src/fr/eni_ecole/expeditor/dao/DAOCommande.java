@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.plaf.synth.SynthScrollPaneUI;
+
 import fr.eni_ecole.expeditor.bean.Commande;
 import fr.eni_ecole.expeditor.bean.Utilisateur;
 import fr.eni_ecole.expeditor.bean.enums.EtatCommande;
@@ -87,6 +89,8 @@ public class DAOCommande
 									EtatCommande.getEnum(rs.getString("etat")),
 									DAOLigneCommande.getLignes(rs.getString("num"))
 						);
+				
+				System.out.println(uneCommande.getClient());
 				lesCommandes.add(uneCommande);				
 			}		
 		}
