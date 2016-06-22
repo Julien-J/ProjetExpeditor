@@ -74,12 +74,13 @@ public class Commandes extends HttpServlet {
 		if ("view_commande".equals(action)){
 			try {
 				Commande commande = new Commande();
-				String numCommande = request.getParameter("numero");
-				try {
+				
+				/*try {
+					String numCommande = request.getParameter("numero");
 					commande = DAOCommande.getCommande(numCommande);
 				} catch (SQLException e) {
 					e.printStackTrace();
-				}
+				}*/
 				request.getSession().setAttribute("Commande", commande);
 				request.getRequestDispatcher("/manager/listeCommande.jsp").forward(request, response);
 			} catch (ServletException e) {
