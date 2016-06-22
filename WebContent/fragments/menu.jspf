@@ -1,11 +1,11 @@
 <ul class="nav nav-pills">
   <li role="presentation" class="active">
-  	<a href="<%=request.getContextPath()%>/articles">Gestion des articles</a>
+  	<a href="<%=request.getContextPath()%>/manager/articles">Gestion des articles</a>
   </li>
   <li role="presentation">
-  	<a href="<%=request.getContextPath()%>/commandes">Gestion des commandes</a>
+  	<a href="<%=request.getContextPath()%>/manager/commandes">Gestion des commandes</a>
   </li>
   <li role="presentation">
-  	<a href="<%=request.getContextPath()%>/employes">Gestion des employés</a>
+  	<a href="<%=request.getContextPath()%>/manager/employes">Gestion des employés</a>
   </li>
 </ul>
