@@ -1,3 +1,4 @@
+<%String menu = ""; %>
 <%@include file="/fragments/haut.jspf" %>
 
 <div id="div_erreur">

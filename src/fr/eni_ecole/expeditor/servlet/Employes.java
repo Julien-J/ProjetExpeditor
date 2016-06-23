@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni_ecole.expeditor.bean.Utilisateur;
 import fr.eni_ecole.expeditor.dao.DAOUtilisateur;
 
 /**
@@ -63,8 +64,23 @@ public class Employes extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dp = null;
+		String action = request.getParameter("action");
 		
 		try {
+			if("ajouter".equals(action)){
+				Utilisateur userToAdd = new Utilisateur();
+				userToAdd.setNom(request.getParameter("nom").toUpperCase());
+				userToAdd.setPrenom(request.getParameter("prenom"));
+				userToAdd.setLogin(request.getParameter("login"));
+				userToAdd.setStatut(request.getParameter("statut"));
+				userToAdd.setMotDePasse("");
+				DAOUtilisateur.insertUtilisateur(userToAdd);
+			}else if ("supprimer".equals(action)){
+				Utilisateur userToDelete = new Utilisateur();
+				userToDelete.setId(request.getParameter("id"));
+				DAOUtilisateur.deleteUtilisateur(userToDelete);
+			}
+			
 			dp = request.getRequestDispatcher("/manager/gestionEmployes.jsp");
 			request.setAttribute("employes", DAOUtilisateur.getAllUtilisateur());			
 			dp.forward(request, response);
