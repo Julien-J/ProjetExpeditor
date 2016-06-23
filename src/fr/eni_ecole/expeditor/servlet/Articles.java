@@ -78,9 +78,12 @@ public class Articles extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) {
 
-		RequestDispatcher dispatcher;
 		String action = request.getParameter("action");
 		if ("add_article".equals(action)) {
+			PrintWriter out = null;
+			String ref = null;
+			Gson gson = new Gson();
+			Article articleRenvoye = new Article();
 			Article monArticle = new Article();
 			String libelle = request.getParameter("libelle");
 			String description = request.getParameter("description");
@@ -93,10 +96,18 @@ public class Articles extends HttpServlet {
 			}
 			monArticle.setPoids(poids);
 			try {
-				DAOArticle.insertArticle(monArticle);
+				ref = DAOArticle.insertArticle(monArticle);
+				articleRenvoye = DAOArticle.getArticle(ref);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			try {
+				out = response.getWriter();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			out.println(gson.toJson(articleRenvoye));
+			out.flush();
 		} else if ("set_article".equals(action)) {
 			Article monArticle = new Article();
 			String reference = request.getParameter("reference");

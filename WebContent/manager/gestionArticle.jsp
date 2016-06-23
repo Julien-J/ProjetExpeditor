@@ -1,4 +1,4 @@
-
+ï»¿
 <%
 	String menu = "articles";
 %>
@@ -18,16 +18,16 @@
 		<span class=" glyphicon glyphicon-plus"></span> Ajouter
 	</button>
 </div>
-<table class="table table-striped">
+<table id="monTableau" class="table table-striped">
 	<thead>
 		<tr>
-			<th>Libellé</th>
+			<th>LibellÃ©</th>
 			<th>Poids</th>
 			<th>Description</th>
 			<th>Actions</th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody id="body_article">
 		<%
 			int i = 0;
 			for (Article unArticle : listeArticle) {
@@ -57,15 +57,15 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Ajouter un article</h4>
+				<h4 class="modal-title"></h4>
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
-					<label>Référence</label> <input type="text" class="form-control"
+					<label>RÃ©fÃ©rence</label> <input type="text" class="form-control"
 						id="referenceArticle" disabled>
 				</div>
 				<div class="form-group">
-					<label>Libellé</label> <input type="text" class="form-control"
+					<label>LibellÃ©</label> <input type="text" class="form-control"
 						id="libelleArticle">
 				</div>
 				<div class="form-group">
@@ -126,10 +126,11 @@
 						+ $("#descriptionArticle").val() + "&poids="
 						+ $("#poidsArticle").val(),
 				success : function() {
-				
+					window.location = window.location.href;
 				}
 			});
 		} else {
+			
 			$.ajax({
 				url : "manager/articles",
 				method : "POST",
@@ -139,7 +140,7 @@
 						+ $("#poidsArticle").val()+ "&reference="
 						+ $("#referenceArticle").val(),
 				success : function() {
-				
+					window.location = window.location.href;
 				}
 			});
 		}
@@ -147,8 +148,10 @@
 
 	function set_mode(id) {
 		if ($(id)[0].dataset.id == "add_article") {
+			$("#detailArticle .modal-title").text("Ajouter un article");
 			mode = "add_article";
 		} else {
+			$("#detailArticle .modal-title").text("Modifier un article");
 			mode = "set_article";
 		}
 	}
@@ -157,7 +160,10 @@
 		$.ajax({
 			url : "manager/articles",
 			method : "POST",
-			data : "action=delete_article&reference=" + $(id)[0].dataset.id
+			data : "action=delete_article&reference=" + $(id)[0].dataset.id,
+			success : function() {
+				window.location = window.location.href;
+			}
 		});
 	}
 
@@ -172,18 +178,23 @@
 				$.toaster({
 					priority : 'success',
 					title : 'Notice',
-					message : 'Article enregistré !'
+					message : 'Article enregistrÃ© !'
 				});
 			}
 		});
 	}
 
+	function updateTable()
+	{
+
+	}
+	
 	function clear_field() {
 		$("#referenceArticle").val(" ");
 		$("#libelleArticle").val(" ");
 		$("#descriptionArticle").val(" ");
 		$("#poidsArticle").val("1");
-	}
+	}	
 </script>
 <%@include file="/fragments/bas.jspf"%>
 
