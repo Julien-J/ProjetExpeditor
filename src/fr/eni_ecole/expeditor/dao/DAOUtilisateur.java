@@ -168,7 +168,7 @@ public class DAOUtilisateur
 		try 
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("INSERT INTO UTILISATEUR VALUES (newid(), ?,?,?,?,?) SELECT SCOPE_IDENTITY()");
+			rqt = cnx.prepareStatement("INSERT INTO UTILISATEUR VALUES (newid(), ?,?,?,?,?); SELECT SCOPE_IDENTITY()");
 			rqt.setString(1, unUtilisateur.getLogin());
 			rqt.setString(2, unUtilisateur.getNom());
 			rqt.setString(3, unUtilisateur.getPrenom());
@@ -226,7 +226,7 @@ public class DAOUtilisateur
 	 * @param unUtilisateur : l'utilisateur � supprimer
 	 * @throws SQLException
 	 */
-	public static void deleteUtilisateur(Utilisateur unUtilisateur) throws SQLException
+	public static Boolean deleteUtilisateur(Utilisateur unUtilisateur) throws SQLException
 	{
 		Connection cnx = null;
 		PreparedStatement rqt = null;
@@ -236,7 +236,7 @@ public class DAOUtilisateur
 			cnx=AccesBase.getConnect();
 			rqt=cnx.prepareStatement("DELETE FROM UTILISATEUR WHERE id = ?");
 			rqt.setString(1, unUtilisateur.getId());
-			rqt.executeUpdate();
+			return rqt.executeUpdate() > 0;
 		}
 		finally
 		{
