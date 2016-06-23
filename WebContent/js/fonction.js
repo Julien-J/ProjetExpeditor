@@ -22,4 +22,15 @@ $(document).ready(function(){
 		$(li).addClass("active");	
 	};
 	
+	/**
+	 * Focntion en charge d'afficher un message de succès
+	 * @param titre
+	 * @param message
+	 */
+	showDialogSucces = function(titre,message){
+		$("#alert_success #alert_success_title h4").html(titre);
+		$("#alert_success #alert_success_content").html(message);
+		console.log($("#alert_success").modal("show"));
+	};
+	
 });

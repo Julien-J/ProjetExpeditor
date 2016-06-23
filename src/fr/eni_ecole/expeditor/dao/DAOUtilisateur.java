@@ -83,7 +83,7 @@ public class DAOUtilisateur
 		try
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("SELECT login, nom, prenom, mdp, statut FROM UTILISATEUR WHERE login=?");
+			rqt = cnx.prepareStatement("SELECT id,login, nom, prenom, mdp, statut FROM UTILISATEUR WHERE id=?");
 			rqt.setString(1, idUtilisateur);
 			rs = rqt.executeQuery();
 			
@@ -196,7 +196,7 @@ public class DAOUtilisateur
 	 * @throws SQLException
 	 * @throws NoSuchAlgorithmException 
 	 */
-	public static void updateUtilisateur(Utilisateur unUtilisateur) throws SQLException, NoSuchAlgorithmException
+	public static Boolean updateUtilisateur(Utilisateur unUtilisateur) throws SQLException, NoSuchAlgorithmException
 	{
 		Connection cnx = null;
 		PreparedStatement rqt = null;
@@ -204,15 +204,14 @@ public class DAOUtilisateur
 		try
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("UPDATE UTILISATEUR SET login = ?, nom = ?, prenom = ?, mdp = ?, statut = ? WHERE id = ?");
+			rqt = cnx.prepareStatement("UPDATE UTILISATEUR SET login = ?, nom = ?, prenom = ?, statut = ? WHERE id = ?");
 			rqt.setString(1, unUtilisateur.getLogin());
 			rqt.setString(2, unUtilisateur.getNom());
 			rqt.setString(3, unUtilisateur.getPrenom());
-			rqt.setString(4, OutilsString.convertTOMD5(unUtilisateur.getMotDePasse()));
-			rqt.setString(5, unUtilisateur.getStatut());
-			rqt.setString(6, unUtilisateur.getId());
+			rqt.setString(4, unUtilisateur.getStatut());
+			rqt.setString(5, unUtilisateur.getId());
 
-			rqt.executeUpdate();
+			return rqt.executeUpdate() > 0;
 		}
 		finally
 		{

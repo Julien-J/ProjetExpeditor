@@ -1,6 +1,7 @@
 package fr.eni_ecole.expeditor.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -10,8 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import fr.eni_ecole.expeditor.bean.Utilisateur;
 import fr.eni_ecole.expeditor.dao.DAOUtilisateur;
+import fr.eni_ecole.expeditor.utils.OutilsString;
 
 /**
  * Servlet implementation class Employes
@@ -64,26 +69,59 @@ public class Employes extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dp = null;
+		PrintWriter out = response.getWriter();
 		String action = request.getParameter("action");
+		Gson gson = null;
+		response.setContentType("application/json");
 		
 		try {
-			if("ajouter".equals(action)){
-				Utilisateur userToAdd = new Utilisateur();
-				userToAdd.setNom(request.getParameter("nom").toUpperCase());
-				userToAdd.setPrenom(request.getParameter("prenom"));
-				userToAdd.setLogin(request.getParameter("login"));
-				userToAdd.setStatut(request.getParameter("statut"));
-				userToAdd.setMotDePasse("");
-				DAOUtilisateur.insertUtilisateur(userToAdd);
+			if("edit".equals(action)){
+				String mode = request.getParameter("mode");			
+				gson = new Gson();
+				
+				Utilisateur userToEdit = new Utilisateur();
+				userToEdit.setNom(request.getParameter("nom").toUpperCase());
+				userToEdit.setPrenom(request.getParameter("prenom"));
+				userToEdit.setLogin(request.getParameter("login"));
+				userToEdit.setStatut(request.getParameter("statut"));
+				
+				if("ajouter".equals(mode)){
+					String password = OutilsString.generatePassword();
+					System.out.println(password);
+					userToEdit.setMotDePasse(password);
+					String id = DAOUtilisateur.insertUtilisateur(userToEdit);
+					
+					if(id != null && !id.isEmpty()) {
+						userToEdit.setId(id);	
+						out.print(gson.toJson(userToEdit));
+					}else{
+						out.print(false);
+					}
+				}else if("modifier".equals(mode)){
+					userToEdit.setId(request.getParameter("id"));					
+					Boolean ok = DAOUtilisateur.updateUtilisateur(userToEdit);
+					
+					if(ok)
+						out.print(gson.toJson(userToEdit));
+					else
+						out.print(false);
+				}
+					
+				out.flush();
 			}else if ("supprimer".equals(action)){
 				Utilisateur userToDelete = new Utilisateur();
 				userToDelete.setId(request.getParameter("id"));
-				DAOUtilisateur.deleteUtilisateur(userToDelete);
+				out.print(DAOUtilisateur.deleteUtilisateur(userToDelete));
+				out.flush();
+			} else if("get_employe".equals(action)){
+				gson = new Gson();
+				out.print(gson.toJson(DAOUtilisateur.getUtilisateur(request.getParameter("id"))));
+				out.flush();
+			}else{
+				dp = request.getRequestDispatcher("/manager/gestionEmployes.jsp");
+				request.setAttribute("employes", DAOUtilisateur.getAllUtilisateur());			
+				dp.forward(request, response);
 			}
-			
-			dp = request.getRequestDispatcher("/manager/gestionEmployes.jsp");
-			request.setAttribute("employes", DAOUtilisateur.getAllUtilisateur());			
-			dp.forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			dp = request.getRequestDispatcher("/erreur.jsp");
@@ -91,5 +129,6 @@ public class Employes extends HttpServlet {
 			dp.forward(request, response);
 		}
 	}
+
 
 }

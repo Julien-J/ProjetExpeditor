@@ -10,7 +10,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/gestionEmployes.js"></script>
 <div style="float: right;">
 	<button type="button" class="btn btn-success" data-toggle="modal"
-		data-target="#detailEmploye">
+		data-target="#detailEmploye" onclick="add_employe()">
 		<span class="glyphicon glyphicon-plus glyphicon"></span>
 		Ajouter
 	</button>
@@ -25,31 +25,35 @@
 			<th>Actions</th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody id="body_employes">
 		<%
 			int i = 0;
 			for (Utilisateur unEmploye : employes) {
 		%>
-		<tr>
-			<td id="<%=i%>"><%=unEmploye.getNom().toUpperCase()+" "+unEmploye.getPrenom()%></td>
-			<td id="<%=i%>"><%=unEmploye.getLogin()%></td>
-			<td id="<%=i%>"><%=unEmploye.getStatut()%></td>
+		<tr id="tr_employe_<%=i%>">
+			<td><%=unEmploye.getNom().toUpperCase()+" "+unEmploye.getPrenom()%></td>
+			<td><%=unEmploye.getLogin()%></td>
+			<td><%=unEmploye.getStatut()%></td>
 			<td class="center" id="<%=i%>"><%=unEmploye.getNbCmdesTraitee() %></td>
-			<td id="<%=i%>">
-				<button type="button" class="btn btn-success">
+			<td>
+				<button type="button" class="btn btn-success" data-tr="<%=i%>"
+						data-id="<%=unEmploye.getId()%>"  data-toggle="modal"
+						data-target="#detailEmploye" onclick="edit_employe(this)">
 					<span class="glyphicon glyphicon-pencil"></span>
 				</button>
-				<button type="button" class="btn btn-danger"
-					data-id=<%=unEmploye.getId()%> onclick="delete_employe(this)">
+				<button type="button" class="btn btn-danger" data-tr="<%=i%>"					
+					data-id="<%=unEmploye.getId()%>" onclick="delete_employe(this)">
 					<span class="glyphicon glyphicon-trash"></span>
 				</button>
 			</td>		
 		</tr>
 		<%
+			i++;
 			}
 		%>
 	</tbody>
 </table>
+	
 
 <div class="modal fade" id="detailEmploye" role="dialog">
 	<div class="modal-dialog">
@@ -76,10 +80,6 @@
 						id="loginEmploye">
 				</div>
 				<div class="form-group">
-					<label>Mot de passe</label><input type="password" class="form-control"
-						id="passEmploye">
-				</div>
-				<div class="form-group">
 					<label>Statut</label>
 					  <select class="form-control" id="statutEmploye">
 					    <option value="employe" selected="selected">Employé</option>
@@ -88,10 +88,12 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal"
-					onclick="add_employe()">Enregistrer</button>
+				<button type="button" class="btn btn-primary" id="btn_enregistrer" 
+					data-mode="ajouter" onclick="enregistrer_employe(this)" data-dismiss="">Enregistrer</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
 			</div>
 		</div>
 	</div>
 </div>
+
+<%@include file="/fragments/bas.jspf" %>

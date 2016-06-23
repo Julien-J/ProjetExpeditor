@@ -5,6 +5,7 @@ package fr.eni_ecole.expeditor.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 /**
  * ProjectExpeditor Version 1.0
@@ -13,7 +14,8 @@ import java.security.NoSuchAlgorithmException;
  *
  */
 public class OutilsString {
-
+	static final String dictionnaire = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	
 	/**
 	 * Méthode en charge de convertir une valeur en sa valeur MD5 
 	 * @param input Valeur à convertir
@@ -31,6 +33,16 @@ public class OutilsString {
 	        sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
 	    
 	    return sb.toString();
+	}
+
+	public static String generatePassword() {
+		Random rdm = new Random();
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i < 8 ; i++){
+			sb.append(dictionnaire.charAt(rdm.nextInt(dictionnaire.length())));
+		}
+		
+		return sb.toString();
 	}
 	
 }

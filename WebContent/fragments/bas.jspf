@@ -1,3 +1,18 @@
-		</div>
+		
+		<div class="modal fade in " id="alert_success" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-header" id="alert_success_title">
+				  	<h4></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-content">
+					<div class="alert alert-success" id="alert_success_content">
+					  
+					</div>
+				</div>
+			</div>
+		</div>	
+		
+		</div>	
 	</body>
 </html>

@@ -88,7 +88,7 @@ public class Utilisateur implements Serializable
 	public void setStatut(String statut) {
 		this.statut = statut;
 	}	
-	
+		
 	public int getNbCmdesTraitee(){
 		try {
 			return DAOCommande.getCommandesTraitees(this.id);

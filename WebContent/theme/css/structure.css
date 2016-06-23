@@ -10,3 +10,43 @@ a {
 .center{
 	text-align: center;
 }
+
+
+/***************************/
+/***** DIALOG SUCCES *******/
+/***************************/
+
+ #alert_success .modal-header,
+ #alert_success  h4,
+ #alert_success  .close {
+     background-color: #3c763d;
+     color:white !important;
+     text-align: center;
+ }
+ 
+ #alert_success .modal-header {
+    border: 0;
+    padding : 0 !important;
+    padding-bottom: 15px !important;
+}
+ 
+ #alert_success h4 {
+    margin: 0;
+    margin-top: 20px;
+}
+ 
+ #alert_success .close {
+    margin-top: -40px;
+    margin-right: 4px;
+ }
+  
+ #alert_success .modal-content { 	
+    border-radius: 0px;
+    border: none;
+ }
+  
+ #alert_success .alert {
+    border-radius: 0px;
+    border: none;
+    margin-bottom: 0 !important;
+ }
