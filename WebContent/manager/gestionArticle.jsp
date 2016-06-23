@@ -13,7 +13,8 @@
 	src="<%=request.getContextPath()%>/js/gestionArticle.js"></script>
 <div style="float: right;">
 	<button type="button" class="btn btn-success" data-toggle="modal"
-		data-target="#detailArticle">
+		data-id="add_article" data-target="#detailArticle"
+		onclick="clear_field();set_mode(this)">
 		<span class=" glyphicon glyphicon-plus"></span> Ajouter
 	</button>
 </div>
@@ -90,15 +91,16 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" data-dismiss="modal"
-					onclick="add_article()">Enregistrer</button>
+					onclick="onArticle()">Enregistrer</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
 			</div>
 		</div>
 	</div>
 </div>
 <script>
-	function get_article(id) {
+	var mode = null;
 
+	function get_article(id) {
 		$.ajax({
 			type : "GET",
 			url : "manager/articles",
@@ -112,6 +114,43 @@
 			}
 		});
 
+	}
+
+	function onArticle() {
+		if (mode == "add_article") {
+			$.ajax({
+				url : "manager/articles",
+				method : "POST",
+				data : "action=add_article&libelle="
+						+ $("#libelleArticle").val() + "&description="
+						+ $("#descriptionArticle").val() + "&poids="
+						+ $("#poidsArticle").val(),
+				success : function() {
+				
+				}
+			});
+		} else {
+			$.ajax({
+				url : "manager/articles",
+				method : "POST",
+				data : "action=set_article&libelle="
+						+ $("#libelleArticle").val() + "&description="
+						+ $("#descriptionArticle").val() + "&poids="
+						+ $("#poidsArticle").val()+ "&reference="
+						+ $("#referenceArticle").val(),
+				success : function() {
+				
+				}
+			});
+		}
+	}
+
+	function set_mode(id) {
+		if ($(id)[0].dataset.id == "add_article") {
+			mode = "add_article";
+		} else {
+			mode = "set_article";
+		}
 	}
 
 	function delete_article(id) {
@@ -137,6 +176,13 @@
 				});
 			}
 		});
+	}
+
+	function clear_field() {
+		$("#referenceArticle").val(" ");
+		$("#libelleArticle").val(" ");
+		$("#descriptionArticle").val(" ");
+		$("#poidsArticle").val("1");
 	}
 </script>
 <%@include file="/fragments/bas.jspf"%>
