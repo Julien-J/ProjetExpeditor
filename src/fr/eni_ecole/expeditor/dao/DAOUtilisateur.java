@@ -168,7 +168,7 @@ public class DAOUtilisateur
 		try 
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("INSERT INTO UTILISATEUR VALUES (newid(), ?,?,?,?,?); SELECT SCOPE_IDENTITY()");
+			rqt = cnx.prepareStatement("DECLARE @id uniqueidentifier; SET @id = newid(); INSERT INTO UTILISATEUR VALUES (@id, ?, ?, ?, ?, ?); SELECT @id;");
 			rqt.setString(1, unUtilisateur.getLogin());
 			rqt.setString(2, unUtilisateur.getNom());
 			rqt.setString(3, unUtilisateur.getPrenom());
