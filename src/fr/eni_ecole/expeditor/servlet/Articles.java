@@ -78,16 +78,13 @@ public class Articles extends HttpServlet {
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) {
 
-		System.out.println("début_article");
 		RequestDispatcher dispatcher;
 		String action = request.getParameter("action");
 		if ("add_article".equals(action)) {
-			System.out.println("add_article");
 			Article monArticle = new Article();
 			String libelle = request.getParameter("libelle");
 			String description = request.getParameter("description");
 			Integer poids = Integer.parseInt(request.getParameter("poids"));
-			System.out.println(poids);
 			if (!libelle.isEmpty()) {
 				monArticle.setLibelle(libelle);
 			}
@@ -100,6 +97,22 @@ public class Articles extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		} else if ("set_article".equals(action)) {
+			Article monArticle = new Article();
+			String reference = request.getParameter("reference");
+			String libelle = request.getParameter("libelle");
+			String description = request.getParameter("description");
+			Integer poids = Integer.parseInt(request.getParameter("poids"));
+			monArticle.setRef(reference);
+			monArticle.setLibelle(libelle);
+			monArticle.setDescription(description);
+			monArticle.setPoids(poids);
+			try {
+				DAOArticle.updateArticle(monArticle);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+				
 		} else if ("get_article".equals(action)) {
 
 			PrintWriter out = null;

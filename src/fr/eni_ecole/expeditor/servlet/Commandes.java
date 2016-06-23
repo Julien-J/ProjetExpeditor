@@ -1,8 +1,11 @@
 package fr.eni_ecole.expeditor.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -11,6 +14,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.eclipse.jdt.internal.compiler.parser.ParserBasicInformation;
+
+import com.google.gson.Gson;
 
 import fr.eni_ecole.expeditor.bean.Article;
 import fr.eni_ecole.expeditor.bean.Commande;
@@ -71,23 +78,22 @@ public class Commandes extends HttpServlet {
 		RequestDispatcher dispatcher;
 		
 		String action = request.getParameter("action");
-		if ("view_commande".equals(action)){
+		if ("get_commande".equals(action)){
+			PrintWriter out = null;
+			Commande maCommande = new Commande();
+			Gson gson = new Gson();
 			try {
-				Commande commande = new Commande();
-				
-				/*try {
-					String numCommande = request.getParameter("numero");
-					commande = DAOCommande.getCommande(numCommande);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}*/
-				request.getSession().setAttribute("Commande", commande);
-				request.getRequestDispatcher("/manager/listeCommande.jsp").forward(request, response);
-			} catch (ServletException e) {
+				maCommande = DAOCommande.getCommande(Integer.parseInt(request.getParameter("numero")));
+			} catch (SQLException e) {
 				e.printStackTrace();
+			}
+			try {
+				out = response.getWriter();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			out.println(gson.toJson(maCommande));
+			out.flush();
 		}else{
 			try {
 				ArrayList<Commande> lesCommandes = new ArrayList<Commande>();
@@ -104,6 +110,5 @@ public class Commandes extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 }
