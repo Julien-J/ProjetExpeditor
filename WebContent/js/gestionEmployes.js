@@ -45,6 +45,7 @@ $(document).ready(function(){
 					$("input#nomEmploye").val(data.nom);
 					$("input#prenomEmploye").val(data.prenom);
 					$("input#loginEmploye").val(data.login);
+					$("input#mailEmploye").val(data.mail);
 					$("input#statutEmploye").val(data.statut);
 				}
 			}
@@ -65,16 +66,18 @@ $(document).ready(function(){
 				url : 'employes',
 				method : 'POST',
 				data : 'action=edit&mode='+mode+'&id='+$("input#idEmploye").val()+'&nom='+$("input#nomEmploye").val()+'&prenom='+$("input#prenomEmploye").val()+
-						'&login='+$("input#loginEmploye").val()+'&statut='+$("#statutEmploye").val(),
+						'&login='+$("input#loginEmploye").val()+'&mail='+$("input#mailEmploye").val()+
+						'&statut='+$("#statutEmploye").val(),
 				success : function(data){
 					if(Boolean(data) == false){
 						
 					}else{
-						if("ajouter" == mode){
+						if("ajouter" == mode && data != null){
 							var numTr = $("#body_employes")[0].childElementCount + 1;
 							var tr = '<tr id="tr_employe_'+numTr+'">';
 							tr += '<td>'+data.nom.toUpperCase()+' '+data.prenom+'</td>';
 							tr += '<td>'+data.login+'</td>';
+							tr += '<td>'+data.mail+'</td>';
 							tr += '<td>'+data.statut+'</td>';
 							tr += '<td class="center">0</td>';
 							tr += '<td>	<button type="button" class="btn btn-success" data-tr="'+numTr+'"'			
@@ -89,9 +92,11 @@ $(document).ready(function(){
 								+'</td>';
 							
 							$("#body_employes").append(tr);
-						}else if("modifier" == mode){
+							showDialogSucces("Employé enregistré","Les informations ont été enregistrées avec succès. Un e-mail contenant le mot de passe a été envoyé à l'employé.");
+						}else if("modifier" == mode && data != null){
 							var tr = '<td>'+data.nom.toUpperCase()+' '+data.prenom+'</td>';
 								tr += '<td>'+data.login+'</td>';
+								tr += '<td>'+data.mail+'</td>';
 								tr += '<td>'+data.statut+'</td>';
 								tr += '<td class="center">0</td>';
 								tr += '<td>	<button type="button" class="btn btn-success" data-tr="'+idTrModifie+'"'			
@@ -105,8 +110,9 @@ $(document).ready(function(){
 									+'		</button>'
 									+'</td>';
 							$("#tr_employe_"+idTrModifie).html(tr);
+
+							showDialogSucces("Employé modifié","Les informations ont été enregistrées avec succès");
 						}
-						showDialogSucces("Employé enregistré","Les informations ont été enregistrées avec succès");
 					}
 				}
 			});

@@ -22,6 +22,7 @@ public class Utilisateur implements Serializable
 	private String login;
 	private String motDePasse;
 	private String statut;
+	private String mail;
 	
 	// Constructeurs
 	public Utilisateur()
@@ -29,7 +30,7 @@ public class Utilisateur implements Serializable
 		super();
 	}
 
-	public Utilisateur(String id, String nom, String prenom, String login, String motDePasse, String statut) 
+	public Utilisateur(String id, String nom, String prenom, String login, String motDePasse, String statut,String mail) 
 	{
 		super();
 		this.id = id;
@@ -38,6 +39,7 @@ public class Utilisateur implements Serializable
 		this.login = login;
 		this.motDePasse = motDePasse;
 		this.statut = statut;
+		this.mail = mail;
 	}
 
 	// Accesseurs
@@ -89,6 +91,14 @@ public class Utilisateur implements Serializable
 		this.statut = statut;
 	}	
 		
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
 	public int getNbCmdesTraitee(){
 		try {
 			return DAOCommande.getCommandesTraitees(this.id);

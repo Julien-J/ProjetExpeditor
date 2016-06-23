@@ -62,29 +62,29 @@ public class GestionCommande extends HttpServlet
 		
 		if ("valid_cmd".equals(action)) 
 		{
-			// Récupération du paramètre Numéro de Commande
+			// Rï¿½cupï¿½ration du paramï¿½tre Numï¿½ro de Commande
 			Integer numCommande = Integer.parseInt(request.getParameter("cmd"));
 			
-			// Récupération de la commande associée
+			// Rï¿½cupï¿½ration de la commande associï¿½e
 			Commande laCommandeTraitee = DAOCommande.getCommande(numCommande);
 			
-			// Mise à Jour de l'état à "Traitée"
+			// Mise ï¿½ Jour de l'ï¿½tat ï¿½ "Traitï¿½e"
 			try 
 			{
 				DAOCommande.setEtatTraitee(laCommandeTraitee);
 			} 
 			catch (Exception e) 
 			{
-				System.out.println("Erreur lors de la mise à jour de la commande : " + e.getMessage());
+				System.out.println("Erreur lors de la mise ï¿½ jour de la commande : " + e.getMessage());
 			}
 		}
 		else if ("take_charge".equals(action))
 		{
-			// Récupération du paramètre Numéro de Commande et l'id de l'utilisateur
+			// Rï¿½cupï¿½ration du paramï¿½tre Numï¿½ro de Commande et l'id de l'utilisateur
 			Integer numCommande = Integer.parseInt(request.getParameter("cmd"));
 			String idUser = request.getParameter("user");
 			
-			// Récupération de la commande associée
+			// Rï¿½cupï¿½ration de la commande associï¿½e
 			Commande laCommandeEnCharge = DAOCommande.getCommande(numCommande);
 			
 			try 
@@ -112,8 +112,8 @@ public class GestionCommande extends HttpServlet
 	}
 	
 	/**
-	 * Méthode en charge de parcourir le fichier de commande 
-	 * et de retourner la première commande en attente
+	 * Mï¿½thode en charge de parcourir le fichier de commande 
+	 * et de retourner la premiï¿½re commande en attente
 	 * @return Objet Commande
 	 * @throws IOException
 	 * @throws SQLException
@@ -134,7 +134,7 @@ public class GestionCommande extends HttpServlet
 		for (String l : lines.subList(1, lines.size()))
 		{
 			String[] strings = l.split(",");
-			String numCommande = strings[1].substring(8);
+			String numCommande = strings[1].substring("Cmd NÂ° ".length());
 			
 			if (DAOCommande.getCommande(Integer.parseInt(numCommande)).getEtat() == EtatCommande.ATTENTE)
 			{

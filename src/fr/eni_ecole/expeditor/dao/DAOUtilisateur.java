@@ -37,7 +37,7 @@ public class DAOUtilisateur
 		try
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("SELECT id, nom, prenom, statut FROM UTILISATEUR WHERE login = ? and mdp = ?");
+			rqt = cnx.prepareStatement("SELECT id, nom, prenom,mail, statut FROM UTILISATEUR WHERE login = ? and mdp = ?");
 			rqt.setString(1, login);
 			rqt.setString(2, motDePasse);
 			rs=rqt.executeQuery();
@@ -47,6 +47,7 @@ public class DAOUtilisateur
 				utilisateurConnecte = new Utilisateur();
 				utilisateurConnecte.setId(rs.getString("id"));
 				utilisateurConnecte.setLogin(login);
+				utilisateurConnecte.setMail(rs.getString("mail"));
 				utilisateurConnecte.setNom(rs.getString("nom"));
 				utilisateurConnecte.setPrenom(rs.getString("prenom"));
 				utilisateurConnecte.setMotDePasse(motDePasse);
@@ -83,7 +84,7 @@ public class DAOUtilisateur
 		try
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("SELECT id,login, nom, prenom, mdp, statut FROM UTILISATEUR WHERE id=?");
+			rqt = cnx.prepareStatement("SELECT id,login, nom, prenom,mail, mdp, statut FROM UTILISATEUR WHERE id=?");
 			rqt.setString(1, idUtilisateur);
 			rs = rqt.executeQuery();
 			
@@ -93,6 +94,7 @@ public class DAOUtilisateur
 				lUtilisateur.setLogin(rs.getString("login"));
 				lUtilisateur.setNom(rs.getString("nom"));
 				lUtilisateur.setPrenom(rs.getString("prenom"));
+				lUtilisateur.setMail(rs.getString("mail"));
 				lUtilisateur.setMotDePasse(rs.getString("mdp"));
 				lUtilisateur.setStatut(rs.getString("statut"));
 			}
@@ -137,7 +139,8 @@ public class DAOUtilisateur
 									rs.getString("prenom"),
 									rs.getString("login"),
 									rs.getString("mdp"),
-									rs.getString("statut")
+									rs.getString("statut"),
+									rs.getString("mail")
 						);
 				lesUtilisateurs.add(unUtilisateur);				
 			}		
@@ -168,12 +171,13 @@ public class DAOUtilisateur
 		try 
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("DECLARE @id uniqueidentifier; SET @id = newid(); INSERT INTO UTILISATEUR VALUES (@id, ?, ?, ?, ?, ?); SELECT @id;");
+			rqt = cnx.prepareStatement("DECLARE @id uniqueidentifier; SET @id = newid(); INSERT INTO UTILISATEUR VALUES (@id, ?, ?, ?, ?, ?, ?); SELECT @id;");
 			rqt.setString(1, unUtilisateur.getLogin());
 			rqt.setString(2, unUtilisateur.getNom());
 			rqt.setString(3, unUtilisateur.getPrenom());
 			rqt.setString(4, OutilsString.convertTOMD5(unUtilisateur.getMotDePasse()));
 			rqt.setString(5, unUtilisateur.getStatut());
+			rqt.setString(6, unUtilisateur.getMail());
 			rqt.executeUpdate();
 			rs = rqt.getGeneratedKeys();
 			while (rs.next())
@@ -204,12 +208,13 @@ public class DAOUtilisateur
 		try
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("UPDATE UTILISATEUR SET login = ?, nom = ?, prenom = ?, statut = ? WHERE id = ?");
+			rqt = cnx.prepareStatement("UPDATE UTILISATEUR SET login = ?, nom = ?, prenom = ?, statut = ?, mail = ? WHERE id = ?");
 			rqt.setString(1, unUtilisateur.getLogin());
 			rqt.setString(2, unUtilisateur.getNom());
 			rqt.setString(3, unUtilisateur.getPrenom());
 			rqt.setString(4, unUtilisateur.getStatut());
-			rqt.setString(5, unUtilisateur.getId());
+			rqt.setString(5, unUtilisateur.getMail());
+			rqt.setString(6, unUtilisateur.getId());
 
 			return rqt.executeUpdate() > 0;
 		}
@@ -236,6 +241,35 @@ public class DAOUtilisateur
 			rqt=cnx.prepareStatement("DELETE FROM UTILISATEUR WHERE id = ?");
 			rqt.setString(1, unUtilisateur.getId());
 			return rqt.executeUpdate() > 0;
+		}
+		finally
+		{
+			if (rqt!=null) rqt.close();
+			if (cnx!=null) cnx.close();
+		}
+	}
+
+	/**
+	 * Méthode en charge de vérifier que l'identifiant saisi existe en BDD 
+	 * @param identifiant Identifiant saisi
+	 * @return Vrai s'il existe sinon faux
+	 * @throws SQLException 
+	 */
+	public static boolean existeIdentifiant(String identifiant) throws SQLException {
+		Connection cnx = null;
+		PreparedStatement rqt = null;
+		ResultSet rs = null;
+		
+		try
+		{
+			cnx=AccesBase.getConnect();
+			rqt=cnx.prepareStatement("SELECT COUNT(*) FROM UTILISATEUR WHERE login = ?");
+			rqt.setString(1, identifiant);
+			rs = rqt.executeQuery();
+			
+			if(rs.next())
+				return rs.getInt(1) > 0;
+			return false;
 		}
 		finally
 		{

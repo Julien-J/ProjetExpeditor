@@ -83,6 +83,7 @@ public class Employes extends HttpServlet {
 				userToEdit.setNom(request.getParameter("nom").toUpperCase());
 				userToEdit.setPrenom(request.getParameter("prenom"));
 				userToEdit.setLogin(request.getParameter("login"));
+				userToEdit.setMail(request.getParameter("mail"));
 				userToEdit.setStatut(request.getParameter("statut"));
 				
 				if("ajouter".equals(mode)){

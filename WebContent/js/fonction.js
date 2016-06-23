@@ -30,7 +30,7 @@ $(document).ready(function(){
 	showDialogSucces = function(titre,message){
 		$("#alert_success #alert_success_title h4").html(titre);
 		$("#alert_success #alert_success_content").html(message);
-		console.log($("#alert_success").modal("show"));
+		$("#alert_success").modal("show");
 	};
 	
 });

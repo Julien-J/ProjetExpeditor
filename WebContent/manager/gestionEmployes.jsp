@@ -20,6 +20,7 @@
 		<tr>
 			<th>Employé</th>
 			<th>Login</th>
+			<th>Adresse mail</th>
 			<th>Statut</th>
 			<th class="center" >Commandes traitées au <%=df_now.format(new Date())%></th>
 			<th>Actions</th>
@@ -33,6 +34,7 @@
 		<tr id="tr_employe_<%=i%>">
 			<td><%=unEmploye.getNom().toUpperCase()+" "+unEmploye.getPrenom()%></td>
 			<td><%=unEmploye.getLogin()%></td>
+			<td><%=unEmploye.getMail()%></td>
 			<td><%=unEmploye.getStatut()%></td>
 			<td class="center" id="<%=i%>"><%=unEmploye.getNbCmdesTraitee() %></td>
 			<td>
@@ -78,6 +80,9 @@
 				<div class="form-group">
 					<label>Login</label><input type="text" class="form-control" disabled="disabled"
 						id="loginEmploye">
+				</div>				
+				<div class="form-group">
+					<label>Adresse mail</label><input type="email" class="form-control" id="mailEmploye">
 				</div>
 				<div class="form-group">
 					<label>Statut</label>

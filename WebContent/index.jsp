@@ -13,7 +13,7 @@
 						placeholder="Mot de passe">	
 				<% if(request.getAttribute("message") != null) { %>
 					<div class="alert alert-danger fade in">
-					  <strong>Erreur !</strong> Identifiant ou mot de passe incorrect.
+					  <strong>Erreur !</strong>  <%=request.getAttribute("message").toString() %>
 					</div>					
 				<% } %>
 				<button type="submit" class="btn btn-primary" id="btn_connexion">

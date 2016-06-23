@@ -78,7 +78,11 @@ public class Connexion extends HttpServlet {
 				user = DAOUtilisateur.rechercher(identifiant,OutilsString.convertTOMD5(motdepasse));
 				if(user == null){
 					dp = request.getRequestDispatcher("/index.jsp");
-					request.setAttribute("message", "Identifiant ou mot de passe incorrect");
+					if(DAOUtilisateur.existeIdentifiant(identifiant)){
+						request.setAttribute("message", "Mot de passe incorrect");
+					}else{
+						request.setAttribute("message", "Identifiant incorrect");						
+					}
 					dp.forward(request, response);
 				} else{
 					request.getSession().setAttribute("user", user);
