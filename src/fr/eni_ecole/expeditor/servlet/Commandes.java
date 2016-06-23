@@ -3,9 +3,14 @@ package fr.eni_ecole.expeditor.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -20,9 +25,13 @@ import org.eclipse.jdt.internal.compiler.parser.ParserBasicInformation;
 import com.google.gson.Gson;
 
 import fr.eni_ecole.expeditor.bean.Article;
+import fr.eni_ecole.expeditor.bean.Client;
 import fr.eni_ecole.expeditor.bean.Commande;
+import fr.eni_ecole.expeditor.bean.Utilisateur;
 import fr.eni_ecole.expeditor.dao.DAOArticle;
+import fr.eni_ecole.expeditor.dao.DAOClient;
 import fr.eni_ecole.expeditor.dao.DAOCommande;
+import fr.eni_ecole.expeditor.dao.DAOUtilisateur;
 
 /**
  * Servlet implementation class Commandes
@@ -80,10 +89,17 @@ public class Commandes extends HttpServlet {
 		String action = request.getParameter("action");
 		if ("get_commande".equals(action)){
 			PrintWriter out = null;
+			HashMap<String, Object> map = new HashMap<String, Object>();
 			Commande maCommande = new Commande();
+			Utilisateur employe = new Utilisateur();
+			Client client = new Client();
+			Article article = new Article();
+			
 			Gson gson = new Gson();
 			try {
 				maCommande = DAOCommande.getCommande(Integer.parseInt(request.getParameter("numero")));
+				employe = DAOUtilisateur.getUtilisateur(maCommande.getIdEmploye());
+				client = DAOClient.getClient(maCommande.getNumClient());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -92,7 +108,31 @@ public class Commandes extends HttpServlet {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			out.println(gson.toJson(maCommande));
+			map.put("commandeData", maCommande);
+			if (employe==null){
+				map.put("employeData", null);
+			}else{
+				map.put("employeData", employe);
+			}
+			map.put("clientData", client);
+			
+			out.println(gson.toJson(map));
+			out.flush();
+		} else if("get_article".equals(action)){
+			PrintWriter out = null;
+			Article article = new Article();
+			Gson gson = new Gson();
+			try {
+				article = DAOArticle.getArticle(request.getParameter("idArticle"));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				out = response.getWriter();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			out.println(gson.toJson(article));
 			out.flush();
 		}else{
 			try {
