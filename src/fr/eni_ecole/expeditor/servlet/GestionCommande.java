@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,8 +18,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni_ecole.expeditor.bean.Client;
 import fr.eni_ecole.expeditor.bean.Commande;
 import fr.eni_ecole.expeditor.bean.enums.EtatCommande;
+import fr.eni_ecole.expeditor.dao.DAOClient;
 import fr.eni_ecole.expeditor.dao.DAOCommande;
 
 /**
@@ -55,12 +58,34 @@ public class GestionCommande extends HttpServlet
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException 
 	{
 		RequestDispatcher dispatcher = null;
+		String action = request.getParameter("action");
 		
-		Commande commandeATraiter = getFirstCommand();
-		
-		request.getSession().setAttribute("commandeATraiter", commandeATraiter);
-		dispatcher = request.getRequestDispatcher("/employe/gestionCommande.jsp"); 
-		dispatcher.forward(request, response);
+		if ("valid_cmd".equals(action)) 
+		{
+			// Récupération du paramètre Numéro de Commande
+			Integer numCommande = Integer.parseInt(request.getParameter("cmd"));
+			
+			// Récupération de la commande associée
+			Commande laCommandeTraitee = DAOCommande.getCommande(numCommande);
+			
+			// Mise à Jour de l'état à "Traitée"
+			try 
+			{
+				DAOCommande.setEtatTraitee(laCommandeTraitee);
+			} 
+			catch (Exception e) 
+			{
+				System.out.println("Erreur lors de la mise à jour de la commande : " + e.getMessage());
+			}
+		}
+		else
+		{
+			Commande commandeATraiter = getFirstCommand();
+			
+			request.getSession().setAttribute("commandeATraiter", commandeATraiter);
+			dispatcher = request.getRequestDispatcher("/employe/gestionCommande.jsp"); 
+			dispatcher.forward(request, response);			
+		}
 	}
 	
 	/**

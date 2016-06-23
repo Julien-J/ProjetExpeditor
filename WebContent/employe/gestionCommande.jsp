@@ -20,7 +20,7 @@
 		qte = qte + uneLigne.getQuantite();
 	}
 %>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/gestionArticle.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/gestionQuantite.js"></script>
 <div class="panel panel-primary">
 	<div class="panel-heading">
 		<h3 class = "panel-title">
@@ -55,7 +55,11 @@
 		</table>
 	</div>
 </div>
-<table class="table table-striped">
+<div style="margin-left:auto; margin-right:auto; width:15%;">
+	<button type="button" class="btn btn-default" onclick="btnEnCharge(this)">Prendre en Charge</button>
+</div>
+</br>
+<table id="tbl" class="table table-striped">
 	<thead>
     	<tr>
       		<th style="text-align:center">Référence</th>
@@ -79,18 +83,8 @@
 				<td style="text-align:center"><%=articleConcerne.getPoids()%> g</td>
 				<td style="text-align:center"> 
 					<div class="input-group number-spinner" style="margin-left:auto; margin-right:auto; width:50%;">
-						<span class="input-group-btn">
-							<button class="btn btn-default input-sm" data-dir="dwn" data-poids="<%=articleConcerne.getPoids()%>" onclick="supprQte(this)">
-								<span class="glyphicon glyphicon-minus"></span>
-							</button>
-						</span> 
-						<input type="text" class="form-control input-sm text-center" value="0" id="qteFournie"> 
-						<span class="input-group-btn">
-							<button class="btn btn-default input-sm" data-dir="up" data-poids="<%=articleConcerne.getPoids()%>" onclick="addQte(this)">
-								<span class="glyphicon glyphicon-plus"></span>
-							</button>
-						</span>
-					</div>
+						<input type="text" class="form-control input-sm text-center" value="0" id="qteFournie" data-current="0" data-poids="<%=articleConcerne.getPoids()%>" onchange="changeQte(this)"> 
+					</div>											
 				</td>
 			</tr>
 		<%
@@ -102,31 +96,60 @@
 <div style="float: right;">
 	<h4><span class="label label-pill label-info"> Poids total* de la commande : <label id="poidsTotal">300</label> g</span></h4>
 </div>
+</br></br></br>
+<div style="margin-left:auto; margin-right:auto; width:15%;">
+	<button type="button" class="btn btn-default" onclick="btnValider()">Valider la commande</button>
+</div>
+<input type="hidden" id="numCommande" value="<%=commande.getNum()%>">
 <script>
-	function addQte(item)
-	{	
-		var the_label = document.getElementById('poidsTotal');
-		var currval = parseInt(the_label.innerHTML);
-		var poidsArticle = parseInt($(item)[0].dataset.poids);
-		var poidsTotal = currval + poidsArticle;
-		if (poidsTotal < 300)
-		{
-			poidsTotal = 300;
-		}
-		the_label.innerHTML = poidsTotal;
-	}
+
+	$(document).ready(function() 
+	{
+		$("#tbl").find("input,button,textarea,select").attr("disabled", "disabled");							         
+	});
 	
-	function supprQte(item)
+	function changeQte(item)
 	{
 		var the_label = document.getElementById('poidsTotal');
 		var currval = parseInt(the_label.innerHTML);
 		var poidsArticle = parseInt($(item)[0].dataset.poids);
-		var poidsTotal = currval - poidsArticle;
-		if (poidsTotal < 300)
+		var poidsTotal = 0;
+		
+		var oldValue = $(item)[0].dataset.current;
+		var newValue = item.value;		
+		
+		if (newValue != oldValue) 
 		{
-			poidsTotal = 300;
+			poidsTotal = currval + ((newValue-oldValue) * poidsArticle);
+			the_label.innerHTML = poidsTotal;
+			
+			$(item)[0].dataset.current = newValue;			  
 		}
-		the_label.innerHTML = poidsTotal;
+	}
+	
+	function btnEnCharge(item)
+	{		
+		item.disabled=true;
+		$("#tbl").find("input,button,textarea,select").removeAttr('disabled');
+	}
+	
+	function btnValider()
+	{
+		var now = new Date();
+		
+		$.ajax({
+			url : "employe/commande",
+			method : "POST",
+			data : "action=valid_cmd&cmd=" + $("#numCommande").val(),
+			success : function() {
+				$.toaster({
+					priority : 'success',
+					title : 'Notice',
+					message : 'Commande traitée !'
+				});
+			}
+		});
 	}
 </script>
+
 <%@include file="/fragments/bas.jspf" %>
