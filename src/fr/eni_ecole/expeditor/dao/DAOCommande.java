@@ -158,10 +158,10 @@ public class DAOCommande
 	}
 
 	/**
-	 * MÃ©thode en charge de rÃ©cupÃ©rer le nombre de commandes traitÃ©es dans la journÃ©e par
-	 * l'utilisateur passÃ© en paramÃ¨tre 
+	 * MÃ©thode en charge de récupérer le nombre de commandes traitées dans la journée par
+	 * l'utilisateur passÃ© en paramètre 
 	 * @param identifiant Identifiant de l'utilisateur passÃ© en paramÃ¨tre
-	 * @return Le nombre de commandes traitÃ©es
+	 * @return Le nombre de commandes traitées
 	 * @throws SQLException 
 	 */
 	public static int getCommandesTraitees(String identifiant) throws SQLException {
@@ -169,7 +169,7 @@ public class DAOCommande
 		PreparedStatement rqt = null;
 		ResultSet rs = null;
 		String sql = "SELECT COUNT(*) FROM COMMANDE "+
-					 "WHERE COMMANDE.idUser = ? AND etat = 'TraitÃ©e' "+
+					 "WHERE COMMANDE.idUser = ? AND etat = 'Traitée' "+
 					 "AND CONVERT(VARCHAR(10),COMMANDE.dateTraitement,110) = CONVERT(VARCHAR(10),GETDATE(),110)";
 		
 		try 
@@ -203,7 +203,7 @@ public class DAOCommande
 	public static boolean setEtatTraitee(Commande commande) throws SQLException{
 		Connection cnx = null;
 		PreparedStatement rqt = null;
-		String sql = "UPDATE COMMANDE SET etat='TraitÃ©e',dateTraitement=GETDATE() "+
+		String sql = "UPDATE COMMANDE SET etat='Traitée',dateTraitement=GETDATE() "+
 					 "WHERE num = ?";
 		
 		try 
@@ -213,6 +213,32 @@ public class DAOCommande
 			rqt.setInt(1, commande.getNum());
 			return rqt.executeUpdate() > 0;
 			
+		}
+		finally 
+		{
+			if (rqt!=null) rqt.close();
+			if (cnx!=null) cnx.close();
+		}
+	}
+	
+	/**
+	 * MÃ©thode en charge de passer la commande à l'état en cours 
+	 * @param commande Commande concernée
+	 * @return Vrai si il y a eu des modifications sinon faux
+	 * @throws SQLException 
+	 */
+	public static boolean setEtatEnCours(Commande commande, String idUser) throws SQLException{
+		Connection cnx = null;
+		PreparedStatement rqt = null;
+		String sql = "UPDATE COMMANDE SET etat='En cours de traitement', idUser = ? WHERE num = ?";
+		
+		try 
+		{
+			cnx = AccesBase.getConnect();
+			rqt = cnx.prepareStatement(sql);			
+			rqt.setString(1, idUser);
+			rqt.setInt(2, commande.getNum());
+			return rqt.executeUpdate() > 0;			
 		}
 		finally 
 		{

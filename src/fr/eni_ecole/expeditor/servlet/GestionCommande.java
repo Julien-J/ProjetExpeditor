@@ -78,6 +78,29 @@ public class GestionCommande extends HttpServlet
 				System.out.println("Erreur lors de la mise à jour de la commande : " + e.getMessage());
 			}
 		}
+		else if ("take_charge".equals(action))
+		{
+			// Récupération du paramètre Numéro de Commande et l'id de l'utilisateur
+			Integer numCommande = Integer.parseInt(request.getParameter("cmd"));
+			String idUser = request.getParameter("user");
+			
+			// Récupération de la commande associée
+			Commande laCommandeEnCharge = DAOCommande.getCommande(numCommande);
+			
+			try 
+			{
+				DAOCommande.setEtatEnCours(laCommandeEnCharge, idUser);
+			
+				Commande commandeATraiter = getFirstCommand();
+				
+				request.getSession().setAttribute("commandeATraiter", commandeATraiter);
+				dispatcher = request.getRequestDispatcher("/employe/gestionCommande.jsp"); 
+				dispatcher.forward(request, response);	
+			} catch (Exception e) 
+			{
+				e.printStackTrace();
+			}			
+		}
 		else
 		{
 			Commande commandeATraiter = getFirstCommand();

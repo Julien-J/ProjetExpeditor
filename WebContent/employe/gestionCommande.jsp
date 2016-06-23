@@ -5,11 +5,13 @@
 <%@ page import="fr.eni_ecole.expeditor.bean.*, fr.eni_ecole.expeditor.dao.*, java.util.*, java.util.regex.*, java.text.*"%>
 <%
 	Commande commande = (Commande) request.getSession().getAttribute("commandeATraiter");
-
+	Utilisateur userConnect = (Utilisateur) request.getSession().getAttribute("user");
+	
 	int qte = 0;
 	String adressePart1 = "";
 	String adressePart2 = "";
 	
+	String idUser = userConnect.getId();
 	
 	String adresse = commande.getClient().getAdresse();
 	String[] strings = adresse.split(" - ");
@@ -98,14 +100,16 @@
 </div>
 </br></br></br>
 <div style="margin-left:auto; margin-right:auto; width:15%;">
-	<button type="button" class="btn btn-default" onclick="btnValider()">Valider la commande</button>
+	<button type="button" id="btnValider" class="btn btn-default" onclick="btnValider()">Valider la commande</button>
 </div>
 <input type="hidden" id="numCommande" value="<%=commande.getNum()%>">
+<input type="hidden" id="idUser" value="<%=idUser%>">
 <script>
 
 	$(document).ready(function() 
 	{
-		$("#tbl").find("input,button,textarea,select").attr("disabled", "disabled");							         
+		$("#tbl").find("input,button,textarea,select").attr("disabled", "disabled");	
+		$("#btnValider").attr("disabled", "disabled");
 	});
 	
 	function changeQte(item)
@@ -130,25 +134,32 @@
 	function btnEnCharge(item)
 	{		
 		item.disabled=true;
+		$("#btnValider").removeAttr('disabled');
 		$("#tbl").find("input,button,textarea,select").removeAttr('disabled');
+		
+  		$.ajax
+ 		({
+ 			url : "employe/commande",
+ 			method : "POST",
+ 			data : "action=take_charge&cmd=" + $("#numCommande").val()
+ 				+ "&user=" + $("#idUser").val(),			
+ 		});
 	}
 	
 	function btnValider()
 	{
 		var now = new Date();
 		
-		$.ajax({
+		$.ajax
+		({
 			url : "employe/commande",
 			method : "POST",
 			data : "action=valid_cmd&cmd=" + $("#numCommande").val(),
-			success : function() {
-				$.toaster({
-					priority : 'success',
-					title : 'Notice',
-					message : 'Commande traitée !'
-				});
+			success: function() {
+				alert("Commande traitée !");
+				window.location = window.location.href;
 			}
-		});
+		});	
 	}
 </script>
 
