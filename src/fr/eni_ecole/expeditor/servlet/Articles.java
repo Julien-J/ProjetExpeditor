@@ -16,7 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import fr.eni_ecole.expeditor.bean.Article;
+import fr.eni_ecole.expeditor.bean.Commande;
+import fr.eni_ecole.expeditor.bean.LigneCommande;
+import fr.eni_ecole.expeditor.bean.enums.EtatCommande;
 import fr.eni_ecole.expeditor.dao.DAOArticle;
+import fr.eni_ecole.expeditor.dao.DAOCommande;
+import fr.eni_ecole.expeditor.dao.DAOLigneCommande;
 
 /**
  * Servlet implementation class Articles
@@ -143,10 +148,34 @@ public class Articles extends HttpServlet {
 			out.flush();
 
 		} else if ("delete_article".equals(action)) {
+			ArrayList<Commande> mesCommandes = new ArrayList<>();
 			System.out.println("delete_article");
 			String reference = request.getParameter("reference");
 			System.out.println(reference);
 			Article monArticle = new Article();
+			
+			try {
+				mesCommandes = DAOCommande.getAllCommande();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			
+			/*for (Commande commande : mesCommandes) {
+				ArrayList<LigneCommande> ligneCommande = new ArrayList<>();
+				try {
+					ligneCommande = DAOLigneCommande.getLignes(commande.getNum());
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				if (commande.getEtat().equals(EtatCommande.ATTENTE) || commande.getEtat().equals(EtatCommande.ENCOURS)) {
+					for (LigneCommande uneLigne : ligneCommande) {
+						if (uneLigne.getRefArticle().equals(reference)) {
+							
+						}
+					}
+				}
+			}*/
+			
 			try {
 				monArticle = DAOArticle.getArticle(reference);
 			} catch (SQLException e) {
@@ -157,6 +186,9 @@ public class Articles extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			
+			
+			
 		} else {
 			System.out.println("liste_article");
 			try {
