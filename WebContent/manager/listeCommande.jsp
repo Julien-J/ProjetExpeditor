@@ -142,6 +142,8 @@
 			data : "action=get_commande&numero=" + $(id)[0].dataset.id,
 			dataType : 'json',
 			success : function(data) {
+				console.log(data.commandeData.date);
+				console.log(DateFormat.format.date(data.commandeData.date,"dd/MM/yyyy HH:mm"));
 				$("#titreCommande").html("Commande " + data.commandeData.num + " - " + data.commandeData.date);
 				$("#numCommande").html("Numéro : " + data.commandeData.num);
 				$("#dateCommande").html("Date : " + data.commandeData.date);
@@ -156,18 +158,17 @@
 					var articleLibelle = [];
 					var articlePoids = [];
 					var articleNum = data.commandeData.lesLignes[i].refArticle;
-					function get_article(articleNum){
-						$.ajax({
-							type : "GET",
-							url : "commandes",
-							data : "action=get_article&idArticle=" + articleNum,
-							dataType : 'json',
-							success : function(data) {
-								articleLibelle = data.libelle;
-								articlePoids = data.poids;
-							}
-						});
-					}	
+					$.ajax({
+						type : "GET",
+						url : "commandes",
+						async : false,
+						data : "action=get_article&idArticle=" + articleNum,
+						dataType : 'json',
+						success : function(data) {
+							articleLibelle = data.libelle;
+							articlePoids = data.poids;
+						}
+					});
 					var tr ='<tr>';
 					tr += '<td>' + data.commandeData.lesLignes[i].refArticle + '</td>';
 					tr += '<td>' + articleLibelle + '</td>';

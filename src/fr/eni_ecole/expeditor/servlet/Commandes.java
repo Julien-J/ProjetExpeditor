@@ -89,6 +89,7 @@ public class Commandes extends HttpServlet {
 		String action = request.getParameter("action");
 		if ("get_commande".equals(action)){
 			PrintWriter out = null;
+			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			Commande maCommande = new Commande();
 			Utilisateur employe = new Utilisateur();
@@ -99,7 +100,7 @@ public class Commandes extends HttpServlet {
 			try {
 				maCommande = DAOCommande.getCommande(Integer.parseInt(request.getParameter("numero")));
 				employe = DAOUtilisateur.getUtilisateur(maCommande.getIdEmploye());
-				client = DAOClient.getClient(maCommande.getNumClient());
+				client = DAOClient.getClient(maCommande.getNumClient()); 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -109,6 +110,7 @@ public class Commandes extends HttpServlet {
 				e.printStackTrace();
 			}
 			map.put("commandeData", maCommande);
+			System.out.println(map);
 			if (employe==null){
 				map.put("employeData", null);
 			}else{

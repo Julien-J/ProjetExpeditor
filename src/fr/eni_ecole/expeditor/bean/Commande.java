@@ -2,6 +2,7 @@ package fr.eni_ecole.expeditor.bean;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -27,7 +28,8 @@ public class Commande implements Serializable
 	private int poidsTotal;
 	private EtatCommande etat;
 	private ArrayList<LigneCommande> lesLignes;
-	
+	private String dateStr;
+
 	// Constructeurs
 	public Commande() 
 	{
@@ -40,7 +42,7 @@ public class Commande implements Serializable
 		this.num = num;
 		this.numClient = numClient;
 		this.idEmploye = idEmploye;
-		this.date = date;
+		setDate(date);
 		this.poidsTotal = poidsTotal;
 		this.etat = etat;
 		this.dateTraitement = dateTraitement;
@@ -102,6 +104,11 @@ public class Commande implements Serializable
 
 	public void setDate(Date date) {
 		this.date = date;
+		SimpleDateFormat formatter;
+
+		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		this.dateStr = formatter.format(date);
 	}
 
 	public Date getDateTraitement() {
@@ -134,5 +141,22 @@ public class Commande implements Serializable
 
 	public void setLesLignes(ArrayList<LigneCommande> lesLignes) {
 		this.lesLignes = lesLignes;
+	}
+
+	public String getDateStr() {
+		return dateStr;
+	}
+
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
+	
+	@Override
+	public String toString() {
+		return "Commande [num=" + num + ", numClient=" + numClient + ", idEmploye=" + idEmploye + ", date=" + date
+				+ ", dateTraitement=" + dateTraitement + ", poidsTotal=" + poidsTotal + ", etat=" + etat
+				+ ", lesLignes=" + lesLignes + "]";
 	}	
+	
+	
 }
