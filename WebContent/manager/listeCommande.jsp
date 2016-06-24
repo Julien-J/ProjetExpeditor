@@ -144,19 +144,23 @@
 			data : "action=get_commande&numero=" + $(id)[0].dataset.id,
 			dataType : 'json',
 			success : function(data) {
-				console.log(data.commandeData.date);
-				console.log(DateFormat.format.date(data.commandeData.date,"dd/MM/yyyy HH:mm"));
+				var empEnCharge = [];
+				if (data.employeData == null){
+					empEnCharge = "N/A";
+				} else {
+					empEnCharge = data.employeData.nom;
+				}
 				$("#titreCommande").html("Commande " + data.commandeData.num + " - " + data.commandeData.dateStr);
 				$("#numCommande").html("Numéro : " + data.commandeData.num);
 				$("#dateCommande").html("Date : " + data.commandeData.dateStr);
-				$("#nbArticle").html("Nombre d'article(s) : ");
 				$("#etatCommande").html("État : " + data.commandeData.etat);
-				$("#empCommande").html("Employé en charge : " + data.employeData.nom);
+				$("#empCommande").html("Employé en charge : " + empEnCharge);
 				$("#numClient").html("Numéro : " + data.clientData.num);
 				$("#nomClient").html("Client : " + data.clientData.nom);
 				$("#adrClient").html("Adresse : " + data.clientData.adresse);
 				
 				var poidsTotal = 0;
+				var nbArticles = 0;
 				for (i = 0; i < data.commandeData.lesLignes.length; i++) {
 					var articleLibelle = [];
 					var articlePoids = 0;
@@ -180,7 +184,9 @@
 					tr +='</tr>';
 					$("#tabArticles").append(tr);
 					poidsTotal = poidsTotal + articlePoids;
+					nbArticles = nbArticles + 1;
 				}
+				$("#nbArticle").html("Nombre d'article(s) : " + nbArticles);
 				poidsTotal = poidsTotal + 300;
 				$("#poidsTotal").html("Poids total de la commande : " + poidsTotal + "g");
 			}
