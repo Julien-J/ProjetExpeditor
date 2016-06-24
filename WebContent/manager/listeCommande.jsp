@@ -122,6 +122,8 @@
 								       </tr>
 								    </tbody>
 								</table>
+								<p id="poidsTotal" class="text-right"></p>
+								<h5 class="text-right"><small>Le poids du carton est de 300g</small></h5>
 							</div>
 						</div>
 					</div>
@@ -144,9 +146,9 @@
 			success : function(data) {
 				console.log(data.commandeData.date);
 				console.log(DateFormat.format.date(data.commandeData.date,"dd/MM/yyyy HH:mm"));
-				$("#titreCommande").html("Commande " + data.commandeData.num + " - " + data.commandeData.date);
+				$("#titreCommande").html("Commande " + data.commandeData.num + " - " + data.commandeData.dateStr);
 				$("#numCommande").html("Numéro : " + data.commandeData.num);
-				$("#dateCommande").html("Date : " + data.commandeData.date);
+				$("#dateCommande").html("Date : " + data.commandeData.dateStr);
 				$("#nbArticle").html("Nombre d'article(s) : ");
 				$("#etatCommande").html("État : " + data.commandeData.etat);
 				$("#empCommande").html("Employé en charge : " + data.employeData.nom);
@@ -154,9 +156,10 @@
 				$("#nomClient").html("Client : " + data.clientData.nom);
 				$("#adrClient").html("Adresse : " + data.clientData.adresse);
 				
+				var poidsTotal = 0;
 				for (i = 0; i < data.commandeData.lesLignes.length; i++) {
 					var articleLibelle = [];
-					var articlePoids = [];
+					var articlePoids = 0;
 					var articleNum = data.commandeData.lesLignes[i].refArticle;
 					$.ajax({
 						type : "GET",
@@ -173,10 +176,13 @@
 					tr += '<td>' + data.commandeData.lesLignes[i].refArticle + '</td>';
 					tr += '<td>' + articleLibelle + '</td>';
 					tr += '<td>' + data.commandeData.lesLignes[i].quantite + '</td>';
-					tr += '<td>' + articlePoids + '</td>';
+					tr += '<td>' + articlePoids + 'g</td>';
 					tr +='</tr>';
 					$("#tabArticles").append(tr);
+					poidsTotal = poidsTotal + articlePoids;
 				}
+				poidsTotal = poidsTotal + 300;
+				$("#poidsTotal").html("Poids total de la commande : " + poidsTotal + "g");
 			}
 		});
 	}
