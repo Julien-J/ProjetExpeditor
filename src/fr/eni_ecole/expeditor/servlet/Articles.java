@@ -81,132 +81,134 @@ public class Articles extends HttpServlet {
 		processRequest(request, response);
 	}
 
-	private void processRequest(HttpServletRequest request, HttpServletResponse response) {
-
-		String action = request.getParameter("action");
-		if ("add_article".equals(action)) {
-			PrintWriter out = null;
-			String ref = null;
-			Gson gson = new Gson();
-			Article articleRenvoye = new Article();
-			Article monArticle = new Article();
-			String libelle = request.getParameter("libelle");
-			String description = request.getParameter("description");
-			Integer poids = Integer.parseInt(request.getParameter("poids"));
-			if (!libelle.isEmpty()) {
-				monArticle.setLibelle(libelle);
-			}
-			if (!description.isEmpty()) {
-				monArticle.setDescription(description);
-			}
-			monArticle.setPoids(poids);
-			try {
-				ref = DAOArticle.insertArticle(monArticle);
-				articleRenvoye = DAOArticle.getArticle(ref);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			try {
-				out = response.getWriter();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			out.println(gson.toJson(articleRenvoye));
-			out.flush();
-		} else if ("set_article".equals(action)) {
-			Article monArticle = new Article();
-			String reference = request.getParameter("reference");
-			String libelle = request.getParameter("libelle");
-			String description = request.getParameter("description");
-			Integer poids = Integer.parseInt(request.getParameter("poids"));
-			monArticle.setRef(reference);
-			monArticle.setLibelle(libelle);
-			monArticle.setDescription(description);
-			monArticle.setPoids(poids);
-			try {
-				DAOArticle.updateArticle(monArticle);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} else if ("get_article".equals(action)) {
-
-			PrintWriter out = null;
-			Article monArticle = new Article();
-			Gson gson = new Gson();
-			try {
-				monArticle = DAOArticle.getArticle(request.getParameter("reference"));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			try {
-				out = response.getWriter();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			out.println(gson.toJson(monArticle));
-			out.flush();
-
-		} else if ("delete_article".equals(action)) {
-			ArrayList<Commande> mesCommandes = new ArrayList<>();
-			System.out.println("delete_article");
-			String reference = request.getParameter("reference");
-			System.out.println(reference);
-			Article monArticle = new Article();
-			boolean b = false;
-			try {
-				mesCommandes = DAOCommande.getAllCommande();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-
-			for (Commande commande : mesCommandes) {
-				ArrayList<LigneCommande> ligneCommande = new ArrayList<>();
+	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		if (request.getSession().getAttribute("user") != null) {
+			String action = request.getParameter("action");
+			if ("add_article".equals(action)) {
+				PrintWriter out = null;
+				String ref = null;
+				Gson gson = new Gson();
+				Article articleRenvoye = new Article();
+				Article monArticle = new Article();
+				String libelle = request.getParameter("libelle");
+				String description = request.getParameter("description");
+				Integer poids = Integer.parseInt(request.getParameter("poids"));
+				if (!libelle.isEmpty()) {
+					monArticle.setLibelle(libelle);
+				}
+				if (!description.isEmpty()) {
+					monArticle.setDescription(description);
+				}
+				monArticle.setPoids(poids);
 				try {
-					ligneCommande = DAOLigneCommande.getLignes(commande.getNum());
+					ref = DAOArticle.insertArticle(monArticle);
+					articleRenvoye = DAOArticle.getArticle(ref);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-				if (commande.getEtat().equals(EtatCommande.ATTENTE)
-						|| commande.getEtat().equals(EtatCommande.ENCOURS)) {
-					for (LigneCommande uneLigne : ligneCommande) {
-						if (uneLigne.getRefArticle().equals(reference)) {
-							b = true;
-							System.out.println("Pas de suppression");
+				try {
+					out = response.getWriter();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				out.println(gson.toJson(articleRenvoye));
+				out.flush();
+			} else if ("set_article".equals(action)) {
+				Article monArticle = new Article();
+				String reference = request.getParameter("reference");
+				String libelle = request.getParameter("libelle");
+				String description = request.getParameter("description");
+				Integer poids = Integer.parseInt(request.getParameter("poids"));
+				monArticle.setRef(reference);
+				monArticle.setLibelle(libelle);
+				monArticle.setDescription(description);
+				monArticle.setPoids(poids);
+				try {
+					DAOArticle.updateArticle(monArticle);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+			} else if ("get_article".equals(action)) {
+
+				PrintWriter out = null;
+				Article monArticle = new Article();
+				Gson gson = new Gson();
+				try {
+					monArticle = DAOArticle.getArticle(request.getParameter("reference"));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				try {
+					out = response.getWriter();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				out.println(gson.toJson(monArticle));
+				out.flush();
+
+			} else if ("delete_article".equals(action)) {
+				ArrayList<Commande> mesCommandes = new ArrayList<>();
+				System.out.println("delete_article");
+				String reference = request.getParameter("reference");
+				System.out.println(reference);
+				Article monArticle = new Article();
+				boolean b = false;
+				try {
+					mesCommandes = DAOCommande.getAllCommande();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+
+				for (Commande commande : mesCommandes) {
+					ArrayList<LigneCommande> ligneCommande = new ArrayList<>();
+					try {
+						ligneCommande = DAOLigneCommande.getLignes(commande.getNum());
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					if (commande.getEtat().equals(EtatCommande.ATTENTE)
+							|| commande.getEtat().equals(EtatCommande.ENCOURS)) {
+						for (LigneCommande uneLigne : ligneCommande) {
+							if (uneLigne.getRefArticle().equals(reference)) {
+								b = true;
+								System.out.println("Pas de suppression");
+							}
 						}
 					}
 				}
-			}
-			if (!b) {
-				try {
-					monArticle = DAOArticle.getArticle(reference);
-				} catch (SQLException e) {
-					e.printStackTrace();
+				if (!b) {
+					try {
+						monArticle = DAOArticle.getArticle(reference);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					try {
+						DAOArticle.deleteArticle(monArticle);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
-				try {
-					DAOArticle.deleteArticle(monArticle);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 
-		} else {
-			System.out.println("liste_article");
-			try {
-				ArrayList<Article> mesArticles = new ArrayList<Article>();
+			} else {
+				System.out.println("liste_article");
 				try {
-					mesArticles = DAOArticle.getAllArticle();
-				} catch (SQLException e) {
+					ArrayList<Article> mesArticles = new ArrayList<Article>();
+					try {
+						mesArticles = DAOArticle.getAllArticle();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					request.getSession().setAttribute("listeArticles", mesArticles);
+					request.getRequestDispatcher("/manager/gestionArticle.jsp").forward(request, response);
+				} catch (ServletException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				request.getSession().setAttribute("listeArticles", mesArticles);
-				request.getRequestDispatcher("/manager/gestionArticle.jsp").forward(request, response);
-			} catch (ServletException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+		} else {
+			response.sendRedirect("/ProjectExpeditor/");
 		}
 	}
-
 }

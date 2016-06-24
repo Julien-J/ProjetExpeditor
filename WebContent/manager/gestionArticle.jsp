@@ -38,7 +38,8 @@
 			<td id=<%=i%>><%=unArticle.getDescription()%></td>
 			<td><button type="button" class="btn btn-success"
 					data-toggle="modal" data-target="#detailArticle"
-					data-id=<%=unArticle.getRef()%> onclick="get_article(this)">
+					data-id=<%=unArticle.getRef()%>
+					onclick="get_article(this);clear_error()">
 					<span class="glyphicon glyphicon-pencil"></span>
 				</button>
 				<button type="button" class="btn btn-danger"
@@ -99,6 +100,7 @@
 	</div>
 </div>
 <script>
+
 	var mode = null;
 
 	function get_article(id) {
@@ -114,7 +116,6 @@
 				$("#poidsArticle").val(data.poids);
 			}
 		});
-
 	}
 
 	function onArticle() {
@@ -133,10 +134,10 @@
 			}
 			if (isNaN($("#poidsArticle").val()) == true) {
 				message_erreur += '<li class="li_erreur">Le poid de l\'article n\'est pas valide</li>';
-			} 
+			}
 			if (message_erreur != '') {
 				message_erreur += '</ul></div>';
-				$("#error").append(message+message_erreur);
+				$("#error").append(message + message_erreur);
 			} else {
 				$.ajax({
 					url : "manager/articles",
@@ -164,6 +165,7 @@
 					window.location = window.location.href;
 				}
 			});
+
 		}
 	}
 
@@ -205,6 +207,9 @@
 		});
 	}
 
+	function clear_error() {
+		$("#error").empty();
+	}
 
 	function clear_field() {
 		$("#referenceArticle").val(" ");
