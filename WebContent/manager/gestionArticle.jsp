@@ -131,6 +131,9 @@
 			} else if ($("#descriptionArticle").val().length < 2) {
 				message_erreur += '<li class="li_erreur">La description de l\'article n\'est pas valide</li>';
 			}
+			if (isNaN($("#poidsArticle").val()) == true) {
+				message_erreur += '<li class="li_erreur">Le poid de l\'article n\'est pas valide</li>';
+			} 
 			if (message_erreur != '') {
 				message_erreur += '</ul></div>';
 				$("#error").append(message+message_erreur);

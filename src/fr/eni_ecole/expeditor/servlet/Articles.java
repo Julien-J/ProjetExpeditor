@@ -128,7 +128,7 @@ public class Articles extends HttpServlet {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-				
+
 		} else if ("get_article".equals(action)) {
 
 			PrintWriter out = null;
@@ -153,42 +153,43 @@ public class Articles extends HttpServlet {
 			String reference = request.getParameter("reference");
 			System.out.println(reference);
 			Article monArticle = new Article();
-			
+			boolean b = false;
 			try {
 				mesCommandes = DAOCommande.getAllCommande();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			
-			/*for (Commande commande : mesCommandes) {
+
+			for (Commande commande : mesCommandes) {
 				ArrayList<LigneCommande> ligneCommande = new ArrayList<>();
 				try {
 					ligneCommande = DAOLigneCommande.getLignes(commande.getNum());
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-				if (commande.getEtat().equals(EtatCommande.ATTENTE) || commande.getEtat().equals(EtatCommande.ENCOURS)) {
+				if (commande.getEtat().equals(EtatCommande.ATTENTE)
+						|| commande.getEtat().equals(EtatCommande.ENCOURS)) {
 					for (LigneCommande uneLigne : ligneCommande) {
 						if (uneLigne.getRefArticle().equals(reference)) {
-							
+							b = true;
+							System.out.println("Pas de suppression");
 						}
 					}
 				}
-			}*/
-			
-			try {
-				monArticle = DAOArticle.getArticle(reference);
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
-			try {
-				DAOArticle.deleteArticle(monArticle);
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if (!b) {
+				try {
+					monArticle = DAOArticle.getArticle(reference);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				try {
+					DAOArticle.deleteArticle(monArticle);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-			
-			
-			
+
 		} else {
 			System.out.println("liste_article");
 			try {
