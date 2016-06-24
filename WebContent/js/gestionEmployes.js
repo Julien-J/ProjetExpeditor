@@ -59,6 +59,7 @@ $(document).ready(function(){
 		var mode = $(button)[0].dataset.mode;
 		var message = verificationAjoutEmploye();
 		if(message != null){
+			$("#alert_erreur_enregistrer").remove();
 			$(message).insertAfter($("#detailEmploye .modal-content .modal-header"));
 		}else{
 			$("#btn_enregistrer")[0].dataset.dismiss = "modal";
@@ -139,6 +140,12 @@ $(document).ready(function(){
 			message_erreur += '<li class="li_erreur">Le prénom de l\'employé n\'est pas valide</li>';
 		}
 		
+		if($("input#mailEmploye").val() == ''){
+			message_erreur += '<li class="li_erreur">L\'adresse mail de l\'employé est obligatoire</li>';
+		}else if(!isValidMail($("input#mailEmploye").val())){
+			message_erreur += '<li class="li_erreur">Le format de l\'adresse mail n\'est pas valide</li>';
+		}
+		console.log(isValidMail($("input#mailEmploye").val()));
 		if(message_erreur != '')
 			return message + message_erreur + '</ul></div>';
 		

@@ -59,59 +59,62 @@ public class GestionCommande extends HttpServlet
 	{
 		RequestDispatcher dispatcher = null;
 		String action = request.getParameter("action");
-		
-		if ("valid_cmd".equals(action)) 
-		{
-			// R�cup�ration du param�tre Num�ro de Commande
-			Integer numCommande = Integer.parseInt(request.getParameter("cmd"));
-			
-			// R�cup�ration de la commande associ�e
-			Commande laCommandeTraitee = DAOCommande.getCommande(numCommande);
-			
-			// Mise � Jour de l'�tat � "Trait�e"
-			try 
+		if(request.getSession().getAttribute("user") != null){
+			if ("valid_cmd".equals(action)) 
 			{
-				DAOCommande.setEtatTraitee(laCommandeTraitee);				
-			} 
-			catch (Exception e) 
-			{
-				System.out.println("Erreur lors de la mise � jour de la commande : " + e.getMessage());
+				// R�cup�ration du param�tre Num�ro de Commande
+				Integer numCommande = Integer.parseInt(request.getParameter("cmd"));
+				
+				// R�cup�ration de la commande associ�e
+				Commande laCommandeTraitee = DAOCommande.getCommande(numCommande);
+				
+				// Mise � Jour de l'�tat � "Trait�e"
+				try 
+				{
+					DAOCommande.setEtatTraitee(laCommandeTraitee);				
+				} 
+				catch (Exception e) 
+				{
+					System.out.println("Erreur lors de la mise � jour de la commande : " + e.getMessage());
+				}
 			}
-		}
-		else if ("take_charge".equals(action))
-		{
-			// R�cup�ration du param�tre Num�ro de Commande et l'id de l'utilisateur
-			Integer numCommande = Integer.parseInt(request.getParameter("cmd"));
-			String idUser = request.getParameter("user");
-			
-			// R�cup�ration de la commande associ�e
-			Commande laCommandeEnCharge = DAOCommande.getCommande(numCommande);
-			
-			try 
+			else if ("take_charge".equals(action))
 			{
-				DAOCommande.setEtatEnCours(laCommandeEnCharge, idUser);
-			
+				// R�cup�ration du param�tre Num�ro de Commande et l'id de l'utilisateur
+				Integer numCommande = Integer.parseInt(request.getParameter("cmd"));
+				String idUser = request.getParameter("user");
+				
+				// R�cup�ration de la commande associ�e
+				Commande laCommandeEnCharge = DAOCommande.getCommande(numCommande);
+				
+				try 
+				{
+					DAOCommande.setEtatEnCours(laCommandeEnCharge, idUser);
+				
+					Commande commandeATraiter = getFirstCommand();
+					
+					request.getSession().setAttribute("commandeATraiter", commandeATraiter);
+					dispatcher = request.getRequestDispatcher("/employe/gestionCommande.jsp"); 
+					dispatcher.forward(request, response);	
+				} catch (Exception e) 
+				{
+					e.printStackTrace();
+				}			
+			}
+			else if("bon_livraison".equals(action))
+			{
+				request.getRequestDispatcher("/employe/bonLivraison.jsp").forward(request, response);
+			}
+			else
+			{
 				Commande commandeATraiter = getFirstCommand();
 				
 				request.getSession().setAttribute("commandeATraiter", commandeATraiter);
 				dispatcher = request.getRequestDispatcher("/employe/gestionCommande.jsp"); 
-				dispatcher.forward(request, response);	
-			} catch (Exception e) 
-			{
-				e.printStackTrace();
-			}			
-		}
-		else if("bon_livraison".equals(action))
-		{
-			request.getRequestDispatcher("/employe/bonLivraison.jsp").forward(request, response);
-		}
-		else
-		{
-			Commande commandeATraiter = getFirstCommand();
-			
-			request.getSession().setAttribute("commandeATraiter", commandeATraiter);
-			dispatcher = request.getRequestDispatcher("/employe/gestionCommande.jsp"); 
-			dispatcher.forward(request, response);			
+				dispatcher.forward(request, response);			
+			}
+		}else{
+			response.sendRedirect(getServletContext().getContextPath()+"/");
 		}
 	}
 	

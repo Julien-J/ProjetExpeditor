@@ -33,4 +33,13 @@ $(document).ready(function(){
 		$("#alert_success").modal("show");
 	};
 	
+	/**
+	 * Fonction en charge de vérifier une adresse mail
+	 * @param mail Adresse mail à vérifier
+	 */
+	isValidMail = function(mail){
+		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(mail);
+	};
+	
 });

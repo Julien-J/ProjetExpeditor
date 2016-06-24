@@ -73,7 +73,7 @@ public class Employes extends HttpServlet {
 		String action = request.getParameter("action");
 		Gson gson = null;
 		response.setContentType("application/json");
-		if(request.getSession().getAttribute("user") == null){
+		if(request.getSession().getAttribute("user") != null){
 			try {
 				if("edit".equals(action)){
 					String mode = request.getParameter("mode");			
@@ -130,8 +130,7 @@ public class Employes extends HttpServlet {
 				dp.forward(request, response);
 			}
 		}else{
-			
-
+			response.sendRedirect(getServletContext().getContextPath()+"/");
 		}
 	}
 

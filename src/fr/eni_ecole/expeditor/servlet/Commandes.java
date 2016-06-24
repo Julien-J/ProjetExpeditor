@@ -83,74 +83,79 @@ public class Commandes extends HttpServlet {
 		processRequest(request, response);
 	}
 
-	private void processRequest(HttpServletRequest request, HttpServletResponse response) {
+	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		RequestDispatcher dispatcher;
 		
 		String action = request.getParameter("action");
-		if ("get_commande".equals(action)){
-			PrintWriter out = null;
-			
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			Commande maCommande = new Commande();
-			Utilisateur employe = new Utilisateur();
-			Client client = new Client();
-			Article article = new Article();
-			
-			Gson gson = new Gson();
-			try {
-				maCommande = DAOCommande.getCommande(Integer.parseInt(request.getParameter("numero")));
-				employe = DAOUtilisateur.getUtilisateur(maCommande.getIdEmploye());
-				client = DAOClient.getClient(maCommande.getNumClient()); 
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			try {
-				out = response.getWriter();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			map.put("commandeData", maCommande);
-			System.out.println(map);
-			if (employe==null){
-				map.put("employeData", null);
-			}else{
-				map.put("employeData", employe);
-			}
-			map.put("clientData", client);
-			
-			out.println(gson.toJson(map));
-			out.flush();
-		} else if("get_article".equals(action)){
-			PrintWriter out = null;
-			Article article = new Article();
-			Gson gson = new Gson();
-			try {
-				article = DAOArticle.getArticle(request.getParameter("idArticle"));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			try {
-				out = response.getWriter();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			out.println(gson.toJson(article));
-			out.flush();
-		}else{
-			try {
-				ArrayList<Commande> lesCommandes = new ArrayList<Commande>();
+
+		if(request.getSession().getAttribute("user") != null){
+			if ("get_commande".equals(action)){
+				PrintWriter out = null;
+				
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				Commande maCommande = new Commande();
+				Utilisateur employe = new Utilisateur();
+				Client client = new Client();
+				Article article = new Article();
+				
+				Gson gson = new Gson();
 				try {
-					lesCommandes = DAOCommande.getAllCommande();
+					maCommande = DAOCommande.getCommande(Integer.parseInt(request.getParameter("numero")));
+					employe = DAOUtilisateur.getUtilisateur(maCommande.getIdEmploye());
+					client = DAOClient.getClient(maCommande.getNumClient()); 
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-				request.getSession().setAttribute("listeCommandes", lesCommandes);
-				request.getRequestDispatcher("/manager/listeCommande.jsp").forward(request, response);
-			} catch (ServletException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+				try {
+					out = response.getWriter();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				map.put("commandeData", maCommande);
+				System.out.println(map);
+				if (employe==null){
+					map.put("employeData", null);
+				}else{
+					map.put("employeData", employe);
+				}
+				map.put("clientData", client);
+				
+				out.println(gson.toJson(map));
+				out.flush();
+			} else if("get_article".equals(action)){
+				PrintWriter out = null;
+				Article article = new Article();
+				Gson gson = new Gson();
+				try {
+					article = DAOArticle.getArticle(request.getParameter("idArticle"));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				try {
+					out = response.getWriter();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				out.println(gson.toJson(article));
+				out.flush();
+			}else{
+				try {
+					ArrayList<Commande> lesCommandes = new ArrayList<Commande>();
+					try {
+						lesCommandes = DAOCommande.getAllCommande();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+					request.getSession().setAttribute("listeCommandes", lesCommandes);
+					request.getRequestDispatcher("/manager/listeCommande.jsp").forward(request, response);
+				} catch (ServletException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
+		}else{
+			response.sendRedirect("/ProjectExpeditor/");
 		}
 	}
 }
