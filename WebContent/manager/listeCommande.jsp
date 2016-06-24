@@ -183,7 +183,7 @@
 					tr += '<td>' + articlePoids + 'g</td>';
 					tr +='</tr>';
 					$("#tabArticles").append(tr);
-					poidsTotal = poidsTotal + articlePoids;
+					poidsTotal = poidsTotal + (articlePoids*data.commandeData.lesLignes[i].quantite);
 					nbArticles = nbArticles + 1;
 				}
 				$("#nbArticle").html("Nombre d'article(s) : " + nbArticles);
