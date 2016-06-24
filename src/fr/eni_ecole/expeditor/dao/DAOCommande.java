@@ -73,7 +73,7 @@ public class DAOCommande
 		try
 		{
 			cnx = AccesBase.getConnect();
-			rqt = cnx.prepareStatement("SELECT * FROM COMMANDE");			
+			rqt = cnx.prepareStatement("SELECT * FROM COMMANDE WHERE etat <> 'Traitée'");			
 			rs = rqt.executeQuery();
 			Commande uneCommande;
 			while (rs.next())
