@@ -71,7 +71,7 @@ public class GestionCommande extends HttpServlet
 			// Mise � Jour de l'�tat � "Trait�e"
 			try 
 			{
-				DAOCommande.setEtatTraitee(laCommandeTraitee);
+				DAOCommande.setEtatTraitee(laCommandeTraitee);				
 			} 
 			catch (Exception e) 
 			{
@@ -100,6 +100,10 @@ public class GestionCommande extends HttpServlet
 			{
 				e.printStackTrace();
 			}			
+		}
+		else if("bon_livraison".equals(action))
+		{
+			request.getRequestDispatcher("/employe/bonLivraison.jsp").forward(request, response);
 		}
 		else
 		{

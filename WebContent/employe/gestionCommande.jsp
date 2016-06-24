@@ -156,8 +156,8 @@
 			method : "POST",
 			data : "action=valid_cmd&cmd=" + $("#numCommande").val(),
 			success: function() {
-				alert("Commande traitée !");
-				window.location = window.location.href;
+				showDialogSucces("Commande traitée !","La commande a été traitée avec succès.");
+				window.location = "employe/commande?action=bon_livraison";
 			}
 		});	
 	}

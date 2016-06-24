@@ -73,61 +73,65 @@ public class Employes extends HttpServlet {
 		String action = request.getParameter("action");
 		Gson gson = null;
 		response.setContentType("application/json");
-		
-		try {
-			if("edit".equals(action)){
-				String mode = request.getParameter("mode");			
-				gson = new Gson();
-				
-				Utilisateur userToEdit = new Utilisateur();
-				userToEdit.setNom(request.getParameter("nom").toUpperCase());
-				userToEdit.setPrenom(request.getParameter("prenom"));
-				userToEdit.setLogin(request.getParameter("login"));
-				userToEdit.setMail(request.getParameter("mail"));
-				userToEdit.setStatut(request.getParameter("statut"));
-				
-				if("ajouter".equals(mode)){
-					String password = OutilsString.generatePassword();
-					System.out.println(password);
-					userToEdit.setMotDePasse(password);
-					String id = DAOUtilisateur.insertUtilisateur(userToEdit);
+		if(request.getSession().getAttribute("user") == null){
+			try {
+				if("edit".equals(action)){
+					String mode = request.getParameter("mode");			
+					gson = new Gson();
 					
-					if(id != null && !id.isEmpty()) {
-						userToEdit.setId(id);	
-						out.print(gson.toJson(userToEdit));
-					}else{
-						out.print(false);
+					Utilisateur userToEdit = new Utilisateur();
+					userToEdit.setNom(request.getParameter("nom").toUpperCase());
+					userToEdit.setPrenom(request.getParameter("prenom"));
+					userToEdit.setLogin(request.getParameter("login"));
+					userToEdit.setMail(request.getParameter("mail"));
+					userToEdit.setStatut(request.getParameter("statut"));
+					
+					if("ajouter".equals(mode)){
+						String password = OutilsString.generatePassword();
+						System.out.println(password);
+						userToEdit.setMotDePasse(password);
+						String id = DAOUtilisateur.insertUtilisateur(userToEdit);
+						
+						if(id != null && !id.isEmpty()) {
+							userToEdit.setId(id);	
+							out.print(gson.toJson(userToEdit));
+						}else{
+							out.print(false);
+						}
+					}else if("modifier".equals(mode)){
+						userToEdit.setId(request.getParameter("id"));					
+						Boolean ok = DAOUtilisateur.updateUtilisateur(userToEdit);
+						
+						if(ok)
+							out.print(gson.toJson(userToEdit));
+						else
+							out.print(false);
 					}
-				}else if("modifier".equals(mode)){
-					userToEdit.setId(request.getParameter("id"));					
-					Boolean ok = DAOUtilisateur.updateUtilisateur(userToEdit);
-					
-					if(ok)
-						out.print(gson.toJson(userToEdit));
-					else
-						out.print(false);
+						
+					out.flush();
+				}else if ("supprimer".equals(action)){
+					Utilisateur userToDelete = new Utilisateur();
+					userToDelete.setId(request.getParameter("id"));
+					out.print(DAOUtilisateur.deleteUtilisateur(userToDelete));
+					out.flush();
+				} else if("get_employe".equals(action)){
+					gson = new Gson();
+					out.print(gson.toJson(DAOUtilisateur.getUtilisateur(request.getParameter("id"))));
+					out.flush();
+				}else{
+					dp = request.getRequestDispatcher("/manager/gestionEmployes.jsp");
+					request.setAttribute("employes", DAOUtilisateur.getAllUtilisateur());			
+					dp.forward(request, response);
 				}
-					
-				out.flush();
-			}else if ("supprimer".equals(action)){
-				Utilisateur userToDelete = new Utilisateur();
-				userToDelete.setId(request.getParameter("id"));
-				out.print(DAOUtilisateur.deleteUtilisateur(userToDelete));
-				out.flush();
-			} else if("get_employe".equals(action)){
-				gson = new Gson();
-				out.print(gson.toJson(DAOUtilisateur.getUtilisateur(request.getParameter("id"))));
-				out.flush();
-			}else{
-				dp = request.getRequestDispatcher("/manager/gestionEmployes.jsp");
-				request.setAttribute("employes", DAOUtilisateur.getAllUtilisateur());			
+			} catch (Exception e) {
+				e.printStackTrace();
+				dp = request.getRequestDispatcher("/erreur.jsp");
+				request.setAttribute("erreur", e);
 				dp.forward(request, response);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			dp = request.getRequestDispatcher("/erreur.jsp");
-			request.setAttribute("erreur", e);
-			dp.forward(request, response);
+		}else{
+			
+
 		}
 	}
 

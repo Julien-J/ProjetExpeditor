@@ -58,7 +58,7 @@
 					<a class="pointer" onclick="reloadPage()" title="Rafraichir la page"><%= df.format(new Date())%></a>
 				</div>
 			</div>
-			<a href="<%=request.getContextPath()%>/deconnexion">
+			<a id="lien_deconnexion" href="<%=request.getContextPath()%>/deconnexion">
 				<button type="button" class="btn btn-danger-outline">
 					<span class="glyphicon glyphicon-off"></span> Déconnexion
 				</button>
