@@ -59,6 +59,7 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title"></h4>
 			</div>
+			<div id="error"></div>
 			<div class="modal-body">
 				<div class="form-group">
 					<label>Référence</label> <input type="text" class="form-control"
@@ -90,7 +91,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" data-dismiss="modal"
+				<button type="button" class="btn btn-primary" data-dismiss=""
 					onclick="onArticle()">Enregistrer</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
 			</div>
@@ -117,27 +118,44 @@
 	}
 
 	function onArticle() {
+		$("#error").empty();
 		if (mode == "add_article") {
-			$.ajax({
-				url : "manager/articles",
-				method : "POST",
-				data : "action=add_article&libelle="
-						+ $("#libelleArticle").val() + "&description="
-						+ $("#descriptionArticle").val() + "&poids="
-						+ $("#poidsArticle").val(),
-				success : function() {
-					window.location = window.location.href;
-				}
-			});
+			var message = '<div class="alert alert-danger" id="alert_erreur_enregistrer" role="alert"><strong>Erreur de saisie :</strong><ul>';
+			var message_erreur = '';
+			if ($("#libelleArticle").val() == "") {
+			} else if ($("#libelleArticle").val().length < 2) {
+				message_erreur += '<li class="li_erreur">Le libellé de l\'article n\'est pas valide</li>';
+			}
+			if ($("#descriptionArticle").val() == "") {
+				message_erreur += '<div class="alert alert-danger" id="alert_erreur_enregistrer" role="alert"><strong>Erreur de saisie :</strong><ul>';
+			} else if ($("#descriptionArticle").val().length < 2) {
+				message_erreur += '<li class="li_erreur">La description de l\'article n\'est pas valide</li>';
+			}
+			if (message_erreur != '') {
+				message_erreur += '</ul></div>';
+				$("#error").append(message+message_erreur);
+			} else {
+				$.ajax({
+					url : "manager/articles",
+					method : "POST",
+					data : "action=add_article&libelle="
+							+ $("#libelleArticle").val() + "&description="
+							+ $("#descriptionArticle").val() + "&poids="
+							+ $("#poidsArticle").val(),
+					success : function() {
+						window.location = window.location.href;
+					}
+				});
+			}
 		} else {
-			
+
 			$.ajax({
 				url : "manager/articles",
 				method : "POST",
 				data : "action=set_article&libelle="
 						+ $("#libelleArticle").val() + "&description="
 						+ $("#descriptionArticle").val() + "&poids="
-						+ $("#poidsArticle").val()+ "&reference="
+						+ $("#poidsArticle").val() + "&reference="
 						+ $("#referenceArticle").val(),
 				success : function() {
 					window.location = window.location.href;
@@ -184,17 +202,13 @@
 		});
 	}
 
-	function updateTable()
-	{
 
-	}
-	
 	function clear_field() {
 		$("#referenceArticle").val(" ");
 		$("#libelleArticle").val(" ");
 		$("#descriptionArticle").val(" ");
 		$("#poidsArticle").val("1");
-	}	
+	}
 </script>
 <%@include file="/fragments/bas.jspf"%>
 
